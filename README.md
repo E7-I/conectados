@@ -47,7 +47,10 @@ Each professional can create their profile, upload photos of their work, indicat
     npm install
     ```
 
-8. ...
+8. Now you can run the client:
+    ```bash
+    npm run dev
+    ```
 
 ## 📑 License
 
