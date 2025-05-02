@@ -1,30 +1,42 @@
-import { useState } from "react";
+import { useState } from 'react'
 
-const Register = () => {
+const Login = () => {
   const [formData, setFormData] = useState({
-    nombre: "",
-    contrasena: "",
-    confirmarContrasena: "",
-  });
+    nombre: '',
+    contrasena: ''
+  })
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
+  }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (formData.contrasena !== formData.confirmarContrasena) {
-      alert("Las contraseñas no coinciden");
-      return;
+  //falta modificar para que se haga la verificacion con el server
+  interface StoredUser {
+    nombre: string
+    contrasena: string
+  }
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const storedUser: StoredUser | null = JSON.parse(
+      localStorage.getItem('user') || 'null'
+    )
+    if (
+      storedUser &&
+      storedUser.nombre === formData.nombre &&
+      storedUser.contrasena === formData.contrasena
+    ) {
+      alert('Inicio de sesión exitoso')
+    } else {
+      alert('Nombre o contraseña incorrectos')
     }
-    console.log("Formulario enviado:", formData);
-  };
+  }
 
   return (
     <div className="pattern-bg bg-cover bg-center min-h-screen flex items-center justify-center">
       <div>
-        <h1 className="text-2xl">Formulario de Registro</h1>
+        <h1 className="text-2xl">Inicio de Sesión</h1>
         <form onSubmit={handleSubmit} className="mt-4">
           <div className="mb-4">
             <label htmlFor="nombre" className="block text-sm font-medium">
@@ -54,41 +66,24 @@ const Register = () => {
               required
             />
           </div>
-          <div className="mb-4">
-            <label
-              htmlFor="confirmarContrasena"
-              className="block text-sm font-medium"
-            >
-              Confirmar Contraseña
-            </label>
-            <input
-              type="password"
-              id="confirmarContrasena"
-              name="confirmarContrasena"
-              value={formData.confirmarContrasena}
-              onChange={handleChange}
-              className="mt-1 block w-full border rounded-md p-2"
-              required
-            />
-          </div>
           <button
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded-md"
           >
-            Registrarse
+            Iniciar Sesión
           </button>
         </form>
         <div className="mt-4">
           <p className="text-sm text-gray-600">
-            ¿Ya tienes una cuenta?{" "}
-            <a href="/login" className="text-blue-500 hover:underline">
-              Iniciar sesión
+            ¿No tienes una cuenta?{' '}
+            <a href="/registro" className="text-blue-500 hover:underline">
+              Registrarse
             </a>
           </p>
+        </div>
       </div>
     </div>
-  </div>
-  );
-};
+  )
+}
 
-export default Register;
+export default Login

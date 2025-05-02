@@ -1,10 +1,10 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Home from "./pages/Home";
-import Register from "./pages/Register";
-import ServiceDetails from "./pages/ServiceDetails";
-import Login from "./pages/Login";
-import './index.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Navbar from './components/Navbar'
+import Home from './pages/Home'
+import Register from './pages/Register'
+import ServiceDetails from './pages/ServiceDetails'
+import Login from './pages/Login'
+import './index.css'
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
         </Routes>
       </div>
     </BrowserRouter>
-  );
+  )
 }
 
-export default App;
+export default App
