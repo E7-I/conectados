@@ -1,18 +1,20 @@
 import User from '../models/user.js'
 import bcrypt from 'bcrypt'
+import validator from '../helpers/validate.js'
 
 const register = async (req, res) => {
   const { id, username, name, email, password } = req.body
 
-  // se verifica que estén todos los campos requeridos
-  if (!id || !username || !name || !email || !password) {
-    return res.status(400).json({ message: 'All fields are required' })
+  // validación de datos
+  const { valid, message } = validator.registerValidation(req.body)
+  if (!valid) {
+    return res.status(400).json({ message })
   }
 
   try {
     // status 409 si el usuario, mail o rut ya están registrados
     const existingUser = await User.findOne({
-      $or: [{ id }, { username }, { email }],
+      $or: [{ id }, { username }, { email }]
     })
     if (existingUser) {
       return res
@@ -30,7 +32,7 @@ const register = async (req, res) => {
       username,
       name,
       email,
-      password: hashedPassword,
+      password: hashedPassword
     })
 
     await newUser.save()
@@ -44,8 +46,8 @@ const register = async (req, res) => {
         email: newUser.email,
         role: newUser.role,
         profile: newUser.profile,
-        location: newUser.location,
-      },
+        location: newUser.location
+      }
     })
   } catch (error) {
     console.error('Error during registration:', error)
@@ -54,5 +56,5 @@ const register = async (req, res) => {
 }
 
 export default {
-  register,
+  register
 }
