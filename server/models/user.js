@@ -1,54 +1,4 @@
-import { Schema, model } from 'mongoose';
-
-/****************
-ESQUEMA PRINCIPAL
-****************/
-const userSchema = new Schema({
-  _id: { // RUT
-    type: Number,
-    required: true,
-    unique: true,
-    immutable: true,
-  },
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  role: {
-    type: String,
-    enum: ['client', 'professional', 'administrator'],
-    required: true,
-  },
-  profile: {
-    type: ProfileSchema,
-    default: {},
-  },
-  location: {
-    type: LocationSchema,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+import { Schema, model } from 'mongoose'
 
 /***********
 SUB-ESQUEMAS
@@ -91,6 +41,60 @@ const LocationSchema = new Schema({
   },
 }, { _id: false });
 
-const User = model('User', userSchema);
+/****************
+ESQUEMA PRINCIPAL
+****************/
+const userSchema = new Schema({
+  id: { // RUT
+    type: Number,
+    required: true,
+    unique: true,
+    immutable: true,
+  },
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  role: {
+    type: String,
+    enum: ['client', 'professional', 'administrator'],
+    default: 'client',
+  },
+  profile: {
+    type: ProfileSchema,
+    default: {},
+  },
+  location: {
+    type: LocationSchema,
+    default: {
+      lat: 0,
+      lng: 0,
+    },
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
+})
 
-export default User;
+const User = model('User', userSchema)
+
+export default User
