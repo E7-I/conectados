@@ -17,6 +17,7 @@ function App() {
           <Route path="/registro" element={<Register />} />
           <Route path="/servicio/:id" element={<ServiceDetails />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/Service/:id" element={<ServiceDetails />} />
           <Route path="/service-provider/:id" element={<ServiceProviderProfile />} />
         </Routes>
       </div>
