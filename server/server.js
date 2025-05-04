@@ -4,11 +4,20 @@ import express from 'express'
 import mongoose from 'mongoose'
 import userRoutes from './routes/user.js'
 import serviceRoutes from './routes/services.js'
+import testRoutes from './routes/test.js'
 
-dotenv.config()
+if (process.env.NODE_ENV === 'test') {
+  dotenv.config({ path: '.env.test' })
+} else {
+  dotenv.config()
+}
 
 const app = express()
 const PORT = process.env.PORT || 5000
+
+if (process.env.NODE_ENV === 'test') {
+  app.use('/api/test', testRoutes)
+}
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB connected'))
