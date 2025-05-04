@@ -1,0 +1,24 @@
+{
+  "name": "conectados",
+  "version": "1.0.0",
+  "homepage": "https://github.com/E7-I/conectados#readme",
+  "bugs": {
+    "url": "https://github.com/E7-I/conectados/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/E7-I/conectados.git"
+  },
+  "license": "MIT",
+  "author": "E7",
+  "type": "module",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "cypress": "^14.3.2"
+  }
+}
