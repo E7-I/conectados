@@ -392,3 +392,117 @@ describe('Register Methods', () => {
     })
   })
 })
+
+describe('Login Methods', () => {
+  beforeEach(() => {
+    cy.request('POST', 'http://localhost:5001/api/test/reset')
+  })
+
+  it('TC01: Debe iniciar sesión con credenciales válidas', () => {
+    cy.fixture('user1').then((user) => {
+      cy.request({
+        method: 'POST',
+        url: `${BASE_URL}/register`,
+        body: user,
+        failOnStatusCode: false
+      }).then((res) => {
+        expect(res.status).to.eq(201)
+        expect(res.body.message).to.eq('User registered successfully')
+
+        cy.request({
+          method: 'POST',
+          url: `${BASE_URL}/login`,
+          body: {
+            username: user.username,
+            password: user.password
+          },
+          failOnStatusCode: false
+        }).then((res) => {
+          expect(res.status).to.eq(200)
+          expect(res.body.message).to.eq('Login successful')
+          expect(res.body.user.username).to.eq(user.username)
+        })
+      })
+    })
+  })
+
+  it('TC02: No debe iniciar sesión con credenciales inválidas', () => {
+    cy.fixture('user1').then((user) => {
+      cy.request({
+        method: 'POST',
+        url: `${BASE_URL}/register`,
+        body: user,
+        failOnStatusCode: false
+      }).then((res) => {
+        expect(res.status).to.eq(201)
+        expect(res.body.message).to.eq('User registered successfully')
+
+        cy.request({
+          method: 'POST',
+          url: `${BASE_URL}/login`,
+          body: {
+            username: user.username,
+            password: 'wrongpassword'
+          },
+          failOnStatusCode: false
+        }).then((res) => {
+          expect(res.status).to.eq(401)
+          expect(res.body.message).to.eq('Invalid credentials')
+        })
+      })
+    })
+  })
+
+  it('TC03: No pueden faltar los campos username y email al mismo tiempo', () => {
+    cy.fixture('user1').then((user) => {
+      cy.request({
+        method: 'POST',
+        url: `${BASE_URL}/register`,
+        body: user,
+        failOnStatusCode: false
+      }).then((res) => {
+        expect(res.status).to.eq(201)
+        expect(res.body.message).to.eq('User registered successfully')
+
+        cy.request({
+          method: 'POST',
+          url: `${BASE_URL}/login`,
+          body: {
+            password: user.password
+          },
+          failOnStatusCode: false
+        }).then((res) => {
+          expect(res.status).to.eq(400)
+          expect(res.body.message).to.eq('Username or email is required')
+        })
+      })
+    })
+  })
+
+  it('TC04: No puede faltar el campo contraseña', () => {
+    cy.fixture('user1').then((user) => {
+      cy.request({
+        method: 'POST',
+        url: `${BASE_URL}/register`,
+        body: user,
+        failOnStatusCode: false
+      }).then((res) => {
+        expect(res.status).to.eq(201)
+        expect(res.body.message).to.eq('User registered successfully')
+
+        cy.request({
+          method: 'POST',
+          url: `${BASE_URL}/login`,
+          body: {
+            username: user.username,
+            email: user.email
+          },
+          failOnStatusCode: false
+        }).then((res) => {
+          expect(res.status).to.eq(400)
+          expect(res.body.message).to.eq('Password is required')
+        })
+      })
+    })
+  })
+})

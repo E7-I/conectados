@@ -46,6 +46,21 @@ const registerValidation = (data) => {
   return { valid: true, message: 'Validation successful' }
 }
 
+const loginValidation = (data) => {
+  const { username, email, password } = data
+
+  if (!username && !email) {
+    return { valid: false, message: 'Username or email is required' }
+  }
+
+  if (!password) {
+    return { valid: false, message: 'Password is required' }
+  }
+
+  return { valid: true, message: 'Validation successful' }
+}
+
 export default {
   registerValidation,
+  loginValidation,
 }
