@@ -37,26 +37,26 @@ const Appointments = ({ user }: { user: User }) => {
   const fakeAppointments: Appointment[] = [
     {
       _id: '1',
-      clientId: 'client1',
+      clientId: 'Roberto',
       professionalId: 'professional1',
       serviceId: 'service1',
       details: {
         date: '2025-05-10',
         time: '10:00',
-        description: 'Consulta médica',
+        description: 'Consulta electrica',
         location: 'Consultorio 1',
       },
       status: 'pending',
     },
     {
       _id: '2',
-      clientId: 'client2',
+      clientId: 'juan',
       professionalId: 'professional1',
       serviceId: 'service1',
       details: {
         date: '2025-05-12',
         time: '14:00',
-        description: 'Consulta nutricional',
+        description: 'Consulta gasfitería',
         location: 'Consultorio 2',
       },
       status: 'pending',
@@ -64,9 +64,9 @@ const Appointments = ({ user }: { user: User }) => {
   ]
 
   const fakeProfessionals = [
-    { _id: 'professional1', name: 'Dr. Juan Pérez', service: 'Consulta médica' },
-    { _id: 'professional2', name: 'Dra. Ana Gómez', service: 'Consulta nutricional' },
-  ]
+    { _id: 'professional1', name: 'Juan Pérez', service: 'Consulta gasfitería' },
+    { _id: 'professional2', name: 'Ana Gómez', service: 'Consulta electrica' },
+  ] 
 
   const fetchAppointments = () => {
     setAppointments(fakeAppointments)
@@ -111,20 +111,37 @@ const Appointments = ({ user }: { user: User }) => {
         {isProfessional ? 'Solicitudes de Citas' : 'Mis Citas'}
       </h1>
 
-      {appointments.length === 0 ? (
+      <p className="mb-4">Bienvenido, {user.role === 'professional' ? 'Profesional' : 'Cliente'}.</p>  
+
+
+      {!isProfessional ? (
+        <p></p>
+      ) : appointments.length === 0 ? (
         <p>No hay citas registradas.</p>
       ) : (
         <div className="space-y-4">
+          {appointments.filter(appt => appt.status === 'pending').length === 0 ? (
+            <p>No hay solicitudes pendientes.</p>
+          ) : (
+            appointments
+              .filter(appt => appt.status === 'pending')
+              .map((appt) => (
+                <div key={appt._id} className="border rounded-lg p-4 shadow-md bg-white">
+                  <p><strong>Cliente:</strong> {appt.clientId}</p>
+                </div>
+              ))
+          )}
           {appointments.map((appt) => (
             <div
               key={appt._id}
               className="border rounded-lg p-4 shadow-md bg-white"
             >
+              <p><strong>Cliente:</strong> {appt.clientId}</p>
               <p><strong>Fecha:</strong> {appt.details.date} {appt.details.time}</p>
               <p><strong>Descripción:</strong> {appt.details.description}</p>
               <p><strong>Ubicación:</strong> {appt.details.location}</p>
               <p><strong>Estado:</strong> {appt.status}</p>
-              {isProfessional && appt.status === 'pending' && (
+              {appt.status === 'pending' && (
                 <div className="mt-2 space-x-2">
                   <button
                     className="bg-green-500 text-white px-3 py-1 rounded"
@@ -144,6 +161,7 @@ const Appointments = ({ user }: { user: User }) => {
           ))}
         </div>
       )}
+
 
       {/* Formulario para que el cliente agende una cita */}
       {!isProfessional && (
