@@ -1,5 +1,46 @@
 import { Schema, model } from 'mongoose';
 
+/***********
+SUB-ESQUEMAS
+***********/
+const ContactInfoSchema = new Schema({
+  type: {
+    type: String,
+    enum: ['email', 'phone', 'linkedin', 'whatsapp', 'website', 'other'],
+    required: true,
+  },
+  value: {
+    type: String,
+    required: true,
+  },
+}, { _id: false });
+
+const ProfileSchema = new Schema({
+  bio: {
+    type: String,
+    default: '',
+  },
+  photoUrl: {
+    type: String,
+    default: '',
+  },
+  contactInfo: {
+    type: [ContactInfoSchema],
+    default: [],
+  },
+}, { _id: false });
+
+const LocationSchema = new Schema({
+  lat: {
+    type: Number,
+    required: true,
+  },
+  lng: {
+    type: Number,
+    required: true,
+  },
+}, { _id: false });
+
 /****************
 ESQUEMA PRINCIPAL
 ****************/
@@ -49,47 +90,6 @@ const userSchema = new Schema({
     default: Date.now,
   },
 });
-
-/***********
-SUB-ESQUEMAS
-***********/
-const ContactInfoSchema = new Schema({
-  type: {
-    type: String,
-    enum: ['email', 'phone', 'linkedin', 'whatsapp', 'website', 'other'],
-    required: true,
-  },
-  value: {
-    type: String,
-    required: true,
-  },
-}, { _id: false });
-
-const ProfileSchema = new Schema({
-  bio: {
-    type: String,
-    default: '',
-  },
-  photoUrl: {
-    type: String,
-    default: '',
-  },
-  contactInfo: {
-    type: [ContactInfoSchema],
-    default: [],
-  },
-}, { _id: false });
-
-const LocationSchema = new Schema({
-  lat: {
-    type: Number,
-    required: true,
-  },
-  lng: {
-    type: Number,
-    required: true,
-  },
-}, { _id: false });
 
 const User = model('User', userSchema);
 

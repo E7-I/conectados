@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import express from 'express'
 import mongoose from 'mongoose'
 import userRoutes from './routes/user.js'
+import serviceRoutes from './routes/services.js'
 
 dotenv.config()
 
@@ -19,6 +20,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use('/api/users', userRoutes)
+app.use('/api/services', serviceRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`)
