@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose'
 
 /***********
 SUB-ESQUEMAS
@@ -45,7 +45,7 @@ const LocationSchema = new Schema({
 ESQUEMA PRINCIPAL
 ****************/
 const userSchema = new Schema({
-  _id: { // RUT
+  id: { // RUT
     type: Number,
     required: true,
     unique: true,
@@ -72,7 +72,7 @@ const userSchema = new Schema({
   role: {
     type: String,
     enum: ['client', 'professional', 'administrator'],
-    required: true,
+    default: 'client',
   },
   profile: {
     type: ProfileSchema,
@@ -80,6 +80,10 @@ const userSchema = new Schema({
   },
   location: {
     type: LocationSchema,
+    default: {
+      lat: 0,
+      lng: 0,
+    },
   },
   createdAt: {
     type: Date,
@@ -89,8 +93,8 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-});
+})
 
-const User = model('User', userSchema);
+const User = model('User', userSchema)
 
-export default User;
+export default User
