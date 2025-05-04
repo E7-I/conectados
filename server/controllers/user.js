@@ -2,20 +2,22 @@ import User from '../models/user.js'
 import bcrypt from 'bcrypt'
 
 const register = async (req, res) => {
-  const { username, name, email, password } = req.body
+  const { id, username, name, email, password } = req.body
 
-  // se verifica estén todos los campos requeridos
-  if (!username || !name || !email || !password) {
+  // se verifica que estén todos los campos requeridos
+  if (!id || !username || !name || !email || !password) {
     return res.status(400).json({ message: 'All fields are required' })
   }
 
   try {
-    // status 409 si el usuario o el email ya están registrados
-    const existingUser = await User.findOne({ $or: [{ username }, { email }] })
+    // status 409 si el usuario, mail o rut ya están registrados
+    const existingUser = await User.findOne({
+      $or: [{ id }, { username }, { email }],
+    })
     if (existingUser) {
       return res
         .status(409)
-        .json({ message: 'Username or email already in use' })
+        .json({ message: 'RUT, username or email already in use' })
     }
 
     // pw hash
@@ -24,6 +26,7 @@ const register = async (req, res) => {
 
     // se crea y se guarda en la db
     const newUser = new User({
+      id,
       username,
       name,
       email,
@@ -35,10 +38,13 @@ const register = async (req, res) => {
     return res.status(201).json({
       message: 'User registered successfully',
       user: {
-        id: newUser._id,
+        id: newUser.id,
         username: newUser.username,
-        email: newUser.email,
         name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+        profile: newUser.profile,
+        location: newUser.location,
       },
     })
   } catch (error) {
