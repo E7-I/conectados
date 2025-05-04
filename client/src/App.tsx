@@ -4,7 +4,6 @@ import Home from './pages/Home'
 import Register from './pages/Register'
 import ServiceDetails from './pages/ServiceDetails'
 import Login from './pages/Login'
-import ServiceProviderProfile from './pages/ServiceProvider';
 import './index.css'
 
 function App() {
@@ -18,7 +17,6 @@ function App() {
           <Route path="/servicio/:id" element={<ServiceDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/Service/:id" element={<ServiceDetails />} />
-          <Route path="/service-provider/:id" element={<ServiceProviderProfile />} />
         </Routes>
       </div>
     </BrowserRouter>
