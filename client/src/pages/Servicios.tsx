@@ -19,6 +19,7 @@ const ServiciosPage: React.FC = () => {
   const [maxPrice, setMaxPrice] = useState('');
   const [category, setCategory] = useState('');
   const [minRating, setMinRating] = useState('');
+  const [searchTerm, setSearchTerm] = useState(''); // <-- NEW
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,13 +32,14 @@ const ServiciosPage: React.FC = () => {
       if (maxPrice) params.maxPrice = maxPrice;
       if (category) params.category = category;
       if (minRating) params.minRating = minRating;
+      if (searchTerm) params.search = searchTerm; // <-- NEW
 
       const endpoint = Object.keys(params).length > 0
         ? 'http://localhost:5000/api/services/getFilteredServices'
         : 'http://localhost:5000/api/services/getAllServices';
 
       const response = await axios.get<Service[]>(endpoint, { params });
-      
+
       if (!response.data) {
         throw new Error('No data received from server');
       }
@@ -54,7 +56,7 @@ const ServiciosPage: React.FC = () => {
 
   useEffect(() => {
     fetchServices();
-  }, []); // Empty dependency array to run only on mount
+  }, []);
 
   const handleFilterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,60 +64,67 @@ const ServiciosPage: React.FC = () => {
   };
 
   return (
-      <div className="pattern-bg bg-cover bg-center min-h-screen flex items-center justify-center">
-        <div className="p-6">
-    <div className="text-center mb-8">
-      <h1 className="text-4xl font-extrabold">Servicios</h1>
-    </div>
-      {/* Filters */}
-      <form onSubmit={handleFilterSubmit} className="flex flex-wrap gap-4 mb-6">
-        <input
-          type="number"
-          placeholder="Precio mínimo"
-          value={minPrice}
-          onChange={(e) => setMinPrice(e.target.value)}
-          className="p-2 border rounded"
-        />
-        <input
-          type="number"
-          placeholder="Precio máximo"
-          value={maxPrice}
-          onChange={(e) => setMaxPrice(e.target.value)}
-          className="p-2 border rounded"
-        />
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="p-2 border rounded"
-        >
-          <option value="">Todas las categorías</option>
-          <option value="Belleza">Belleza</option>
-          <option value="Construcción">Construcción</option>
-          <option value="Gasfitería">Gasfitería</option>
-          <option value="Jardinería">Jardinería</option>
-          <option value="Electricidad">Electricidad</option>
-          <option value="Gastronomía">Gastronomía</option>
-          <option value="Limpieza">Limpieza</option>
-          <option value="Otro">Otro</option>
-        </select>
-        <input
-          type="number"
-          placeholder="Rating mínimo"
-          value={minRating}
-          onChange={(e) => setMinRating(e.target.value)}
-          className="p-2 border rounded w-40"
-          min={0}
-          max={5}
-          step={0.1}
-        />
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          disabled={isLoading}
-        >
-          {isLoading ? 'Filtrando...' : 'Filtrar'}
-        </button>
-      </form>
+    <div className="pattern-bg bg-cover bg-center min-h-screen flex items-center justify-center">
+      <div className="p-6">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-extrabold">Servicios</h1>
+        </div>
+        {/* Filters */}
+        <form onSubmit={handleFilterSubmit} className="flex flex-wrap gap-4 mb-6">
+          <input
+            type="text"
+            placeholder="Buscar servicio..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="p-2 border rounded w-full md:w-64"
+          />
+          <input
+            type="number"
+            placeholder="Precio mínimo"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+            className="p-2 border rounded"
+          />
+          <input
+            type="number"
+            placeholder="Precio máximo"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            className="p-2 border rounded"
+          />
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="p-2 border rounded"
+          >
+            <option value="">Todas las categorías</option>
+            <option value="Belleza">Belleza</option>
+            <option value="Construcción">Construcción</option>
+            <option value="Gasfitería">Gasfitería</option>
+            <option value="Jardinería">Jardinería</option>
+            <option value="Electricidad">Electricidad</option>
+            <option value="Gastronomía">Gastronomía</option>
+            <option value="Limpieza">Limpieza</option>
+            <option value="Otro">Otro</option>
+          </select>
+          <input
+            type="number"
+            placeholder="Rating mínimo"
+            value={minRating}
+            onChange={(e) => setMinRating(e.target.value)}
+            className="p-2 border rounded w-40"
+            min={0}
+            max={5}
+            step={0.1}
+          />
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Filtrando...' : 'Filtrar'}
+          </button>
+        </form>
 
       {/* Status messages */}
       {isLoading ? (
