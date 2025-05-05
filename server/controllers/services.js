@@ -122,6 +122,15 @@ const getFilteredServices = async (req, res) => {
       if (minRating) {
         filters.averageRating = { $gte: Number(minRating) };
       }
+
+      if (req.query.search) {
+        const regex = new RegExp(req.query.search, 'i');
+        filters.$or = [
+          { title: regex },
+          { description: regex }
+        ];
+      }
+      
   
       const services = await Service.find(filters);
       res.json(services);
