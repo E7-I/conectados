@@ -104,11 +104,38 @@ const addRating = async (req, res) => {
     }
 };
 
+const getFilteredServices = async (req, res) => {
+    try {
+      const { minPrice, maxPrice, category, minRating } = req.query;
+  
+      const filters = {};
+  
+      if (minPrice || maxPrice) {
+        filters['price.min'] = { ...(minPrice && { $gte: Number(minPrice) }) };
+        filters['price.max'] = { ...(maxPrice && { $lte: Number(maxPrice) }) };
+      }
+  
+      if (category) {
+        filters.categories = category;
+      }
+  
+      if (minRating) {
+        filters.averageRating = { $gte: Number(minRating) };
+      }
+  
+      const services = await Service.find(filters);
+      res.json(services);
+    } catch (error) {
+      res.status(500).json({ error: 'Error fetching services' });
+    }
+};
+
 export default {
     newService,
     getServiceId,
     getAllServices,
     getServiceProfessionalId,
     updateService,
-    addRating
+    addRating,
+    getFilteredServices
 };
