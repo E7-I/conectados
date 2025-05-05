@@ -17,6 +17,18 @@ const registerValidation = (data) => {
     return { valid: false, message: 'All fields are required' }
   }
 
+  if (isNaN(id)) {
+    return { valid: false, message: 'Invalid ID format' }
+  }
+
+  if (id % 1 !== 0) {
+    return { valid: false, message: 'Invalid ID format' }
+  }
+
+  if (id < 1) {
+    return { valid: false, message: 'Invalid ID format' }
+  }
+
   if (username.length < 3 || username.length > 30) {
     return {
       valid: false,
@@ -60,7 +72,30 @@ const loginValidation = (data) => {
   return { valid: true, message: 'Validation successful' }
 }
 
+const getUserByIdValidation = (data) => {
+  const { id } = data
+
+  if (!id) {
+    return { valid: false, message: 'ID is required' }
+  }
+
+  if (isNaN(id)) {
+    return { valid: false, message: 'Invalid ID format' }
+  }
+
+  if (id % 1 !== 0) {
+    return { valid: false, message: 'Invalid ID format' }
+  }
+
+  if (id < 1) {
+    return { valid: false, message: 'Invalid ID format' }
+  }
+
+  return { valid: true, message: 'Validation successful' }
+}
+
 export default {
   registerValidation,
   loginValidation,
+  getUserByIdValidation
 }

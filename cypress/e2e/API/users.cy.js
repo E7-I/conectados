@@ -506,3 +506,115 @@ describe('Login Methods', () => {
     })
   })
 })
+
+describe('Get User by ID Methods', () => {
+  beforeEach(() => {
+    cy.request('POST', 'http://localhost:5001/api/test/reset')
+  })
+
+  it('TC01: Debe obtener un usuario por ID', () => {
+    cy.fixture('user1').then((user) => {
+      cy.request({
+        method: 'POST',
+        url: `${BASE_URL}/register`,
+        body: user,
+        failOnStatusCode: false
+      }).then((res) => {
+        expect(res.status).to.eq(201)
+        expect(res.body.message).to.eq('User registered successfully')
+
+        const userId = res.body.user.id
+
+        cy.request({
+          method: 'GET',
+          url: `${BASE_URL}/id/${userId}`,
+          failOnStatusCode: false
+        }).then((res) => {
+          expect(res.status).to.eq(200)
+          expect(res.body.user.username).to.eq(user.username)
+          expect(res.body.user.name).to.eq(user.name)
+          expect(res.body.user.email).to.eq(user.email)
+        })
+      })
+    })
+  })
+
+  it('TC02: No debe permitir el paso de ID con formato inválido', () => {
+    cy.fixture('user1').then((user) => {
+      cy.request({
+        method: 'POST',
+        url: `${BASE_URL}/register`,
+        body: user,
+        failOnStatusCode: false
+      }).then((res) => {
+        expect(res.status).to.eq(201)
+        expect(res.body.message).to.eq('User registered successfully')
+
+        const invalidUserId = 'invalidUserId'
+
+        cy.request({
+          method: 'GET',
+          url: `${BASE_URL}/id/${invalidUserId}`,
+          failOnStatusCode: false
+        }).then((res) => {
+          expect(res.status).to.eq(400)
+          expect(res.body.message).to.eq('Invalid ID format')
+        })
+      })
+    })
+  })
+})
+
+describe('Get All Users Methods', () => {
+  beforeEach(() => {
+    cy.request('POST', 'http://localhost:5001/api/test/reset')
+  })
+
+  it('TC01: Debe obtener todos los usuarios', () => {
+    cy.fixture('user1').then((user1) => {
+      cy.fixture('user2').then((user2) => {
+        cy.request({
+          method: 'POST',
+          url: `${BASE_URL}/register`,
+          body: user1,
+          failOnStatusCode: false
+        }).then((res) => {
+          expect(res.status).to.eq(201)
+          expect(res.body.message).to.eq('User registered successfully')
+
+          cy.request({
+            method: 'POST',
+            url: `${BASE_URL}/register`,
+            body: user2,
+            failOnStatusCode: false
+          }).then((res) => {
+            expect(res.status).to.eq(201)
+            expect(res.body.message).to.eq('User registered successfully')
+
+            cy.request({
+              method: 'GET',
+              url: `${BASE_URL}/`,
+              failOnStatusCode: false
+            }).then((res) => {
+              expect(res.status).to.eq(200)
+              expect(res.body.users.length).to.be.greaterThan(0)
+              expect(res.body.users[0].username).to.eq(user1.username)
+              expect(res.body.users[1].username).to.eq(user2.username)
+            })
+          })
+        })
+      })
+    })
+  })
+
+  it('TC02: No debe haber problemas si no hay usuarios registrados', () => {
+    cy.request({
+      method: 'GET',
+      url: `${BASE_URL}/`,
+      failOnStatusCode: false
+    }).then((res) => {
+      expect(res.status).to.eq(200)
+      expect(res.body.users.length).to.eq(0)
+    })
+  })
+})

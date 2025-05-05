@@ -110,7 +110,90 @@ const login = async (req, res) => {
   }
 }
 
+const getUserById = async (req, res) => {
+  const { id } = req.params
+
+  const { valid, message } = validator.getUserByIdValidation(req.params)
+
+  if (!valid) {
+    return res.status(400).json({ message })
+  }
+
+  try {
+    const user = await User.findOne({ id }).select('-password')
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+    return res.status(200).json({ user })
+  } catch (error) {
+    console.error('Error retrieving user by ID:', error)
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+const getAllUsers = async (req, res) => {
+  const page = parseInt(req.query.page) || 1    // página actual
+  const limit = parseInt(req.query.limit) || 10 // cantidad de elementos por página
+
+  const skip = (page - 1) * limit
+
+  try {
+    const users = await User.find()
+      .select('-password')
+      .skip(skip)
+      .limit(limit)
+
+    const totalUsers = await User.countDocuments()
+
+    return res.status(200).json({
+      users,
+      totalUsers,
+      currentPage: page,
+      totalPages: Math.ceil(totalUsers / limit),
+    });
+  } catch (error) {
+    console.error('Error retrieving users:', error)
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+const searchUsers = async (req, res) => {
+  const { username, name, email, role } = req.query
+  const page = parseInt(req.query.page) || 1
+  const limit = parseInt(req.query.limit) || 10
+  const skip = (page - 1) * limit
+
+  const filters = {}
+
+  if (username) filters.username = { $regex: username, $options: 'i' }
+  if (name) filters.name = { $regex: name, $options: 'i' }
+  if (email) filters.email = { $regex: email, $options: 'i' }
+  if (role) filters.role = role
+
+  try {
+    const users = await User.find(filters)
+      .select('-password')
+      .skip(skip)
+      .limit(limit)
+
+    const totalUsers = await User.countDocuments(filters)
+
+    return res.status(200).json({
+      users,
+      totalUsers,
+      currentPage: page,
+      totalPages: Math.ceil(totalUsers / limit),
+    })
+  } catch (error) {
+    console.error('Error searching users:', error)
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
 export default {
   register,
   login,
+  getUserById,
+  getAllUsers,
+  searchUsers
 }
