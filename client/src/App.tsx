@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Register from './pages/Register'
 import ServiceDetails from './pages/ServiceDetails'
 import Login from './pages/Login'
+import Servicios from './pages/Servicios'
 import Appointments from './pages/Appointments'
 import './index.css'
 
@@ -23,9 +24,9 @@ function App() {
           <Route path="/servicio/:id" element={<ServiceDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/Service/:id" element={<ServiceDetails />} />
+          <Route path="/servicios" element={<Servicios />} />
           <Route path="/citas" element={<Appointments user={fakeUser} />} />
           <Route path="*" element={<div>404 Not Found</div>} />
-
         </Routes>
       </div>
     </BrowserRouter>
