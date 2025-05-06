@@ -1,47 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
-{/*Dummy data para testear*/ }
-const mockService = {
-  _id: '1',
-  professionalid: '64f1b2c3d4e5f6a7b8c9d0e1', // Matches ObjectId type in User schema
-  title: 'Electricista Certificado',
-  description:
-    'Servicio profesional de electricidad para hogares y empresas. Instalaciones, reparaciones y mantenimiento.',
-  images: [
-    'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.descripciondepuestos.org%2Fwp-content%2Fuploads%2F2024%2F09%2FqYsoj5VWwgjmhODX6t3Ot-1.png&f=1&nofb=1&ipt=c74627c068e2f675c424207223ae237dde30a5a016d4823a93a8849de37eb4a5',
-    'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.electricien-illkirch-crh.fr%2Fdata%2Fuploads%2F2020%2F10%2Fartisan_electricien-1.jpeg&f=1&nofb=1&ipt=fd0948402083d098caa7f62c0b22851d03d89edeb7de63c0e6f0c73b6808c1ad',
-  ],
-  video: 'https://www.w3schools.com/html/mov_bbb.mp4',
-  categories: ['Electricidad', 'Construcción'],
-  price: { min: 30000, max: 80000 },
-  averageRating: 4.6,
-  timesDone: 457,
-  reviews: [
-    {
-      _id: '64f1b2c3d4e5f6a7b8c9d0e2', // Matches ObjectId type in Review schema
-      serviceId: '1',
-      appointmentId: '64f1b2c3d4e5f6a7b8c9d0e3', // Matches ObjectId type in Appointment schema
-      professionalId: '64f1b2c3d4e5f6a7b8c9d0e1',
-      reviewerId: '64f1b2c3d4e5f6a7b8c9d0e4',
-      stars: 5,
-      comment: 'Muy buen trabajo, rápido y eficiente.',
-      response: 'Gracias por tu comentario!',
-      createdAt: '2023-10-01T10:00:00Z',
-    },
-    {
-      _id: '64f1b2c3d4e5f6a7b8c9d0e5',
-      serviceId: '1',
-      appointmentId: '64f1b2c3d4e5f6a7b8c9d0e6',
-      professionalId: '64f1b2c3d4e5f6a7b8c9d0e1',
-      reviewerId: '64f1b2c3d4e5f6a7b8c9d0e7',
-      stars: 4,
-      comment: 'El servicio fue correcto, pero llegó un poco tarde.',
-      response: null,
-      createdAt: '2023-10-02T15:30:00Z',
-    },
-  ],
-};
+import axios from 'axios';
 
 type Appointment = {
   clientId: string;
@@ -51,43 +10,6 @@ type Appointment = {
   dateTime: { start: string; end: string };
   status: string;
 };
-
-const mockAppointments: Appointment[] = [
-  {
-    clientId: 'user123',
-    profesiolanlId: '64f1b2c3d4e5f6a7b8c9d0e1',
-    requestId: 'req1',
-    serviceId: '1',
-    dateTime: {
-      start: '2025-05-03T10:00:00Z',
-      end: '2025-05-03T11:00:00Z',
-    },
-    status: 'agendado',
-  },
-  {
-    clientId: 'user456',
-    profesiolanlId: '64f1b2c3d4e5f6a7b8c9d0e1',
-    requestId: 'req2',
-    serviceId: '1',
-    dateTime: {
-      start: '2025-05-03T13:00:00Z',
-      end: '2025-05-03T14:00:00Z',
-    },
-    status: 'agendado',
-  },
-  {
-    clientId: 'user456',
-    profesiolanlId: '64f1b2c3d4e5f6a7b8c9d0e1',
-    requestId: 'req2',
-    serviceId: '1',
-    dateTime: {
-      start: '2025-04-29T13:00:00Z',
-      end: '2025-04-29T14:00:00Z',
-    },
-    status: 'agendado',
-  },
-];
-
 
 type Review = {
   _id: string;
@@ -105,18 +27,15 @@ type Service = {
   _id: string;
   professionalid: string;
   title: string;
-  description: string;	
+  description: string;
   images?: string[];
   video?: string;
   categories: string[];
   price: { min: number; max: number };
   averageRating: number;
   timesDone: number;
-  reviews?: Review[];
 };
 
-
-{/* Disponibilidad semanal related */}
 const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
 const getWeekDates = (startDate: Date) => {
@@ -177,18 +96,43 @@ const getWeeklySchedule = (
 const ServiceDetail = () => {
   const { id } = useParams();
   const [service, setService] = useState<Service | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [weeklySchedule, setWeeklySchedule] = useState<
-  { date: Date; slots: { time: string; taken: boolean }[] }[]
->([]);
+    { date: Date; slots: { time: string; taken: boolean }[] }[]
+  >([]);
 
   useEffect(() => {
-    if (id === '1') {
-      setService(mockService);
-      setSelectedImage(mockService.images ? mockService.images[0] : null);
+    const fetchServiceDetails = async () => {
+      try {
+        const serviceResponse = await axios.get(
+          `http://localhost:5000/api/services/getService/${id}`
+        );
+        const serviceData: Service = serviceResponse.data;
+        setService(serviceData);
+        setSelectedImage(serviceData.images ? serviceData.images[0] : null);
 
-      const schedule = getWeeklySchedule(mockAppointments);
-      setWeeklySchedule(schedule);
+        /*const appointmentsResponse = await axios.get(
+          `http://localhost:5000/api/services/api/getAppointmentsByService/${id}` //placeholder endpoint
+        );
+        const appointmentsData: Appointment[] = appointmentsResponse.data;
+
+        const schedule = getWeeklySchedule(appointmentsData);
+        setWeeklySchedule(schedule);*/
+
+        // Fetch reviews by professional ID
+        const reviewsResponse = await axios.get(
+          `http://localhost:5000/api/reviews/getReviewsByProfessionalId/123`
+        );
+        const reviewsData: Review[] = reviewsResponse.data;
+        setReviews(reviewsData);
+      } catch (error) {
+        console.error('Error fetching service details:', error);
+      }
+    };
+
+    if (id) {
+      fetchServiceDetails();
     }
   }, [id]);
 
@@ -235,11 +179,11 @@ const ServiceDetail = () => {
             <p className="text-gray-700 mb-6">{service.description}</p>
             <div className="mb-6">
               <p className="text-2xl font-semibold text-blue-600">
-              ${service.price.min.toLocaleString()} - ${service.price.max.toLocaleString()}
+                ${service.price.min.toLocaleString()} - ${service.price.max.toLocaleString()}
               </p>
             </div>
             <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-full text-lg font-semibold transition shadow w-full mb-4">
-            Contactar 
+              Contactar
             </button>
           </div>
         </div>
@@ -290,17 +234,16 @@ const ServiceDetail = () => {
           </div>
         )}
         {/* Reviews Section */}
-        {service.reviews && (
+        {(
           <div className="mt-12">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">Opiniones de clientes</h2>
             <div className="space-y-6">
-              {service.reviews.map((rev, idx) => (
+              {reviews.map((rev, idx) => (
                 <div key={idx} className="bg-gray-100 p-4 rounded-lg shadow">
                   <div className="flex justify-between mb-1">
                     <span className="font-semibold text-gray-800">{rev.comment}</span>
                     <span className="text-yellow-500">⭐ {rev.stars}/5</span>
                   </div>
-                  <p className="text-gray-700 text-sm">{rev.comment}</p>
                   {rev.response && (
                     <p className="text-gray-500 text-sm mt-2">Respuesta: {rev.response}</p>
                   )}

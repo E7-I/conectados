@@ -9,5 +9,6 @@ router.get('/getServicesProfessionalId/:professionalid', userController.getServi
 router.get('/getAllServices', userController.getAllServices)
 router.put('/updateService/:id', userController.updateService)
 router.put('/addRating/:id', userController.addRating)
+router.get('/getFilteredServices', userController.getFilteredServices)
 
 export default router
