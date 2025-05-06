@@ -8,5 +8,6 @@ router.post('/login', userController.login)
 router.get('/id/:id', userController.getUserById)
 router.get('/search', userController.searchUsers)
 router.get('/', userController.getAllUsers)
+router.put('/update/:id', userController.updateUser)
 
 export default router
