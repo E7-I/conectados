@@ -64,8 +64,8 @@ const ServiciosPage: React.FC = () => {
   };
 
   return (
-    <div className="pattern-bg bg-cover bg-center min-h-screen flex items-center justify-center">
-      <div className="min-h-screen bg-gray-100 pattern-bg bg-cover bg-center ">
+    <div className="pattern-bg bg-cover bg-center min-h-[calc(100vh-4rem)] flex items-center justify-center">
+      <div className="min-h-[calc(100vh-4rem)] bg-gray-100 pattern-bg bg-cover bg-center ">
         <header className="bg-blue-600 text-white py-4 px-6">
           <h1 className="text-3xl font-bold">Servicios</h1>
         </header>

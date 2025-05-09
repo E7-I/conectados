@@ -1,7 +1,7 @@
 const Home = () => {
   return (
-    <div className="pattern-bg bg-cover bg-center min-h-screen flex items-center justify-center">
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white w-full py-16 px-6">
+    <div className="pattern-bg bg-cover bg-center min-h-[calc(100vh-4rem)] flex items-center justify-center">
+      <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-blue-50 to-white w-full py-16 px-6">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-6xl font-extrabold text-blue-700 mb-6 drop-shadow-sm">
             Bienvenido a <span className="text-blue-900">Conectados</span>
