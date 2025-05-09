@@ -6,6 +6,7 @@ import userRoutes from './routes/user.js'
 import serviceRoutes from './routes/services.js'
 import testRoutes from './routes/test.js'
 import reviewRoutes from './routes/review.js'
+import appointmentRoutes from './routes/appointments.js'
 
 if (process.env.NODE_ENV === 'test') {
   dotenv.config({ path: '.env.test' })
@@ -32,6 +33,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/api/users', userRoutes)
 app.use('/api/services', serviceRoutes)
 app.use('/api/reviews', reviewRoutes)
+app.use('/api/appointments', appointmentRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`)

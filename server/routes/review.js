@@ -9,5 +9,6 @@ router.get('/getAllReviews', reviewController.getAllReviews);
 router.put('/updateReview/:id', reviewController.updateReview);
 router.delete('/deleteReview/:id', reviewController.deleteReview);
 router.get('/getReviewsByProfessionalId/:professionalId', reviewController.getReviewsByProfessionalId);
+router.get('/getReviewsByServiceId/:serviceId', reviewController.getReviewsByServiceId);
 
 export default router;
