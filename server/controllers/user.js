@@ -12,10 +12,13 @@ const register = async (req, res) => {
     return res.status(400).json({ message })
   }
 
+  const rut = id.split('-')[0]
+  const rutNumber = parseInt(rut, 10)
+
   try {
     // status 409 si el usuario, mail o rut ya están registrados
     const existingUser = await User.findOne({
-      $or: [{ id }, { username }, { email }]
+      $or: [{ id: rutNumber }, { username }, { email }]
     })
     if (existingUser) {
       return res
@@ -29,7 +32,7 @@ const register = async (req, res) => {
 
     // se crea y se guarda en la db
     const newUser = new User({
-      id,
+      id: rutNumber,
       username,
       name,
       email,
@@ -82,14 +85,12 @@ const login = async (req, res) => {
     // crear token JWT
     const token = jwt.createToken(user)
 
-    /*
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      // secure: process.env.NODE_ENV === 'production',
       sameSite: 'Strict',
       maxAge: 30 * 24 * 60 * 60 * 1000 // 30 días
     })
-    */
 
     return res.status(200).json({
       message: 'Login successful',

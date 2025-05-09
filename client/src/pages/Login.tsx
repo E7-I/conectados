@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import axios from 'axios'
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -11,25 +12,31 @@ const Login = () => {
     setFormData({ ...formData, [name]: value })
   }
 
-  //falta modificar para que se haga la verificacion con el server
-  interface StoredUser {
-    nombre: string
-    contrasena: string
-  }
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const storedUser: StoredUser | null = JSON.parse(
-      localStorage.getItem('user') || 'null'
-    )
-    if (
-      storedUser &&
-      storedUser.nombre === formData.nombre &&
-      storedUser.contrasena === formData.contrasena
-    ) {
-      alert('Inicio de sesión exitoso')
-    } else {
-      alert('Nombre o contraseña incorrectos')
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/api/users/login',
+        {
+          username: formData.nombre,
+          password: formData.contrasena
+        },
+        { withCredentials: true }
+      )
+      if (response.status === 200) {
+        alert('Inicio de sesión exitoso')
+      } else {
+        alert('Error en el inicio de sesión')
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        alert(
+          `${error.response?.data?.message || 'Error en el inicio de sesión'}`
+        )
+      } else {
+        console.error('Unexpected error:', error)
+        alert('Ocurrió un error inesperado')
+      }
     }
   }
 
