@@ -112,17 +112,17 @@ const ServiceDetail = () => {
         setService(serviceData);
         setSelectedImage(serviceData.images ? serviceData.images[0] : null);
 
-        /*const appointmentsResponse = await axios.get(
-          `http://localhost:5000/api/services/api/getAppointmentsByService/${id}` //placeholder endpoint
+        const appointmentsResponse = await axios.get(
+          `http://localhost:5000/api/appointments/getAppointmentByServicelId/${id}` //placeholder endpoint
         );
         const appointmentsData: Appointment[] = appointmentsResponse.data;
 
         const schedule = getWeeklySchedule(appointmentsData);
-        setWeeklySchedule(schedule);*/
+        setWeeklySchedule(schedule);
 
         // Fetch reviews by professional ID
         const reviewsResponse = await axios.get(
-          `http://localhost:5000/api/reviews/getReviewsByProfessionalId/123`
+          `http://localhost:5000/api/reviews/getReviewsByServiceId/${id}`
         );
         const reviewsData: Review[] = reviewsResponse.data;
         setReviews(reviewsData);
