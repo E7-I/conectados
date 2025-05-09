@@ -92,6 +92,24 @@ export const getReviewsByProfessionalId = async (req, res) => {
   }
 };
 
+export const getReviewsByServiceId = async (req, res) => {
+  try {
+    const { serviceId } = req.params;
+
+    // Buscar todas las reseñas asociadas al profesional
+    const reviews = await Review.find({ serviceId }).populate('serviceId reviewerId');
+
+    if (!reviews || reviews.length === 0) {
+      return res.status(404).json({ error: 'No reviews found for this service' });
+    }
+
+    res.status(200).json(reviews);
+  } catch (error) {
+    console.error('Error fetching reviews by professional ID:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
 export default {
   createReview,
   getReviewById,
@@ -99,4 +117,5 @@ export default {
   updateReview,
   deleteReview,
   getReviewsByProfessionalId,
+  getReviewsByServiceId
 };
