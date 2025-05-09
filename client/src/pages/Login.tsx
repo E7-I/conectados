@@ -41,7 +41,7 @@ const Login = () => {
   }
 
   return (
-    <div className="pattern-bg bg-cover bg-center min-h-screen flex items-center justify-center">
+    <div className="pattern-bg bg-cover bg-center flex items-center justify-center">
       <div>
         <h1 className="text-2xl">Inicio de Sesión</h1>
         <form onSubmit={handleSubmit} className="mt-4">
