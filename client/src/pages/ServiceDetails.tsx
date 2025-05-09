@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 type Appointment = {
   clientId: string;
@@ -104,25 +105,26 @@ const ServiceDetail = () => {
   useEffect(() => {
     const fetchServiceDetails = async () => {
       try {
-        const serviceResponse = await fetch(`http://localhost:5000/api/services/getService/${id}`);
-        const serviceData: Service = await serviceResponse.json();
+        const serviceResponse = await axios.get(
+          `http://localhost:5000/api/services/getService/${id}`
+        );
+        const serviceData: Service = serviceResponse.data;
         setService(serviceData);
         setSelectedImage(serviceData.images ? serviceData.images[0] : null);
 
-        /*const appointmentsResponse = await fetch(
-          `http://localhost:5000/api/services/api/getAppointmentsByService/${id}` //placeholder endpoint
+        const appointmentsResponse = await axios.get(
+          `http://localhost:5000/api/appointments/getAppointmentByServicelId/${id}` //placeholder endpoint
         );
-        const appointmentsData: Appointment[] = await appointmentsResponse.json();
+        const appointmentsData: Appointment[] = appointmentsResponse.data;
 
         const schedule = getWeeklySchedule(appointmentsData);
-        setWeeklySchedule(schedule);*/
+        setWeeklySchedule(schedule);
 
         // Fetch reviews by professional ID
-        const reviewsResponse = await fetch(
-          `http://localhost:5000/api/reviews/getReviewsByProfessionalId/123`
+        const reviewsResponse = await axios.get(
+          `http://localhost:5000/api/reviews/getReviewsByServiceId/${id}`
         );
-        console.log(reviewsResponse);
-        const reviewsData: Review[] = await reviewsResponse.json();
+        const reviewsData: Review[] = reviewsResponse.data;
         setReviews(reviewsData);
       } catch (error) {
         console.error('Error fetching service details:', error);
