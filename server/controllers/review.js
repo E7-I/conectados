@@ -1,3 +1,4 @@
+import User from '../models/user.js'; // Importa el modelo de usuarios
 import Review from '../models/review.js';
 
 // Crear una nueva reseña
@@ -5,10 +6,34 @@ export const createReview = async (req, res) => {
   try {
     const { serviceId, appointmentId, professionalId, reviewerId, stars, comment } = req.body;
 
+    // Verificar que todos los campos requeridos estén presentes
     if (!serviceId || !appointmentId || !professionalId || !reviewerId || !stars || !comment) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
+    // Verificar que el professionalId exista en la colección de usuarios
+    const professional = await User.findOne({ id: professionalId });
+    if (!professional) {
+      return res.status(400).json({ error: 'Professional not found' });
+    }
+
+    // Verificar que el reviewerId exista en la colección de usuarios
+    const reviewer = await User.findOne({ id: reviewerId });
+    if (!reviewer) {
+      return res.status(400).json({ error: 'Reviewer not found' });
+    }
+
+    // Validar que las estrellas estén dentro del rango permitido
+    if (stars < 1 || stars > 5) {
+      return res.status(400).json({ error: 'Stars must be between 1 and 5' });
+    }
+
+    // Validar que el comentario no exceda el límite de caracteres
+    if (comment.length > 500) {
+      return res.status(400).json({ error: 'Comment exceeds maximum length of 500 characters' });
+    }
+
+    // Crear y guardar la reseña
     const review = new Review(req.body);
     const savedReview = await review.save();
     res.status(201).json(savedReview);
