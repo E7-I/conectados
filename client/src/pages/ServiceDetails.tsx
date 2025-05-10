@@ -175,7 +175,7 @@ const ServiceDetail = () => {
   if (!service) return <div className="text-center py-20">Cargando servicio...</div>;
 
   return (
-    <div className="pattern-bg bg-cover bg-center min-h-screen flex items-center justify-center">
+    <div className="pattern-bg bg-cover bg-center min-h-[calc(100vh-4rem)] flex items-center justify-center">
       <div className="max-w-6xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Left Column: Images */}

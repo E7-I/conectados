@@ -31,6 +31,10 @@ const ProfileSchema = new Schema({
 }, { _id: false });
 
 const LocationSchema = new Schema({
+  address: {
+    type: String,
+    required: true,
+  },
   lat: {
     type: Number,
     required: true,
