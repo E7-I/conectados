@@ -39,7 +39,7 @@ const getRequestByProfessionalId = async (req, res) => {
   try {
     const { professionalId } = req.params;
 
-    const requests = await RequestModel.find({ professionalId });
+    const requests = await requestModel.find({ professionalId });
 
     if (!requests || requests.length === 0) {
       return res.status(404).json({ message: 'No requests found for this professional.' });
@@ -55,7 +55,7 @@ const getRequestByClientId = async (req, res) => {
   try {
     const { clientId } = req.params;
 
-    const requests = await RequestModel.find({ clientId });
+    const requests = await requestModel.find({ clientId });
 
     if (!requests || requests.length === 0) {
       return res.status(404).json({ message: 'No requests found for this professional.' });

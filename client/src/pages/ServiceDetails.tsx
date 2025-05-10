@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import axios from 'axios'
 
 type Appointment = {
   clientId: string;
@@ -36,143 +36,156 @@ type Service = {
   timesDone: number;
 };
 
-const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
 
 const getWeekDates = (startDate: Date) => {
-  const monday = new Date(startDate);
-  monday.setDate(startDate.getDate() - ((startDate.getDay() + 6) % 7)); // adjust to Monday
-  monday.setHours(0, 0, 0, 0);
+  const monday = new Date(startDate)
+  monday.setDate(startDate.getDate() - ((startDate.getDay() + 6) % 7)) // adjust to Monday
+  monday.setHours(0, 0, 0, 0)
 
   return Array.from({ length: 6 }, (_, i) => {
-    const d = new Date(monday);
-    d.setDate(monday.getDate() + i);
-    return d;
-  });
-};
+    const d = new Date(monday)
+    d.setDate(monday.getDate() + i)
+    return d
+  })
+}
 
 const generateTimeSlots = (startHour: number, endHour: number) => {
-  const slots = [];
+  const slots = []
   for (let hour = startHour; hour < endHour; hour++) {
-    slots.push({ start: hour, end: hour + 1 });
+    slots.push({ start: hour, end: hour + 1 })
   }
-  return slots;
-};
+  return slots
+}
 
 const getWeeklySchedule = (
   appointments: Appointment[],
   startHour = 8,
   endHour = 18
 ) => {
-  const weekDates = getWeekDates(new Date());
-  const slots = generateTimeSlots(startHour, endHour);
+  const weekDates = getWeekDates(new Date())
+  const slots = generateTimeSlots(startHour, endHour)
 
   return weekDates.map((date) => {
     return {
       date,
       slots: slots.map(({ start, end }) => {
-        const slotStart = new Date(date);
-        slotStart.setHours(start, 0, 0, 0);
-        const slotEnd = new Date(date);
-        slotEnd.setHours(end, 0, 0, 0);
+        const slotStart = new Date(date)
+        slotStart.setHours(start, 0, 0, 0)
+        const slotEnd = new Date(date)
+        slotEnd.setHours(end, 0, 0, 0)
 
         const isTaken = appointments.some((appt) => {
-          const apptStart = new Date(appt.dateTime.start);
-          const apptEnd = new Date(appt.dateTime.end);
+          const apptStart = new Date(appt.dateTime.start)
+          const apptEnd = new Date(appt.dateTime.end)
           return (
             (slotStart >= apptStart && slotStart < apptEnd) ||
             (slotEnd > apptStart && slotEnd <= apptEnd)
-          );
-        });
+          )
+        })
 
         return {
           time: `${start}:00 - ${end}:00`,
           taken: isTaken,
           startDateTime: slotStart.toISOString(),
           endDateTime: slotEnd.toISOString(),
-        };
+        }
       }),
-    };
-  });
-};
+    }
+  })
+}
 
 const ServiceDetail = () => {
-  const { id } = useParams();
-  const [service, setService] = useState<Service | null>(null);
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const { id } = useParams()
+  const [service, setService] = useState<Service | null>(null)
+  const [reviews, setReviews] = useState<Review[]>([])
+  const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [weeklySchedule, setWeeklySchedule] = useState<
     { date: Date; slots: { time: string; taken: boolean; startDateTime: string; endDateTime: string }[] }[]
-  >([]);
+  >([])
   const [selectedSlot, setSelectedSlot] = useState<{
     startDateTime: string;
     endDateTime: string;
-  } | null>(null);
+  } | null>(null)
+  const [description, setDescription] = useState('')
+  const [location, setLocation] = useState({ lat: '', lng: '' })
 
   useEffect(() => {
     const fetchServiceDetails = async () => {
       try {
         const serviceResponse = await axios.get(
           `http://localhost:5000/api/services/getService/${id}`
-        );
-        const serviceData: Service = serviceResponse.data;
-        setService(serviceData);
-        setSelectedImage(serviceData.images ? serviceData.images[0] : null);
+        )
+        const serviceData: Service = serviceResponse.data
+        setService(serviceData)
+        setSelectedImage(serviceData.images ? serviceData.images[0] : null)
 
         const appointmentsResponse = await axios.get(
-          `http://localhost:5000/api/appointments/getAppointmentByServicelId/${id}` //placeholder endpoint
-        );
-        const appointmentsData: Appointment[] = appointmentsResponse.data;
+          `http://localhost:5000/api/appointments/getAppointmentByServicelId/${id}` 
+        )
+        const appointmentsData: Appointment[] = appointmentsResponse.data
 
-        const schedule = getWeeklySchedule(appointmentsData);
-        setWeeklySchedule(schedule);
+        const schedule = getWeeklySchedule(appointmentsData)
+        setWeeklySchedule(schedule)
 
         // Fetch reviews by professional ID
         const reviewsResponse = await axios.get(
           `http://localhost:5000/api/reviews/getReviewsByServiceId/${id}`
-        );
-        const reviewsData: Review[] = reviewsResponse.data;
-        setReviews(reviewsData);
+        )
+        const reviewsData: Review[] = reviewsResponse.data
+        setReviews(reviewsData)
       } catch (error) {
-        console.error('Error fetching service details:', error);
+        console.error('Error fetching service details:', error)
       }
-    };
+    }
 
     if (id) {
-      fetchServiceDetails();
+      fetchServiceDetails()
     }
-  }, [id]);
+  }, [id])
 
   const handleSlotClick = (slot: { startDateTime: string; endDateTime: string }) => {
     if (!slot.taken) {
-      setSelectedSlot(slot);
+      setSelectedSlot(slot)
     }
-  };
+  }
 
   const handleContactClick = async () => {
-    if (!selectedSlot || !service) return;
+    if (!selectedSlot || !service || !description || !location.lat || !location.lng) {
+      alert('Please fill in all fields.')
+      return
+    }
 
     const appointmentData = {
-      clientId: "663c2a87f4e31b1c9ef75abc", // Replace with actual client ID
+      clientId: '663c2a87f4e31b1c9ef75abc', // placeholder, should be the actual client id 
       professionalId: service.professionalid,
-      requestId: "663c2c90aa5a4f3d3c9d1234", // Replace with actual request ID
       serviceId: service._id,
-      startDateTime: selectedSlot.startDateTime,
-      endDateTime: selectedSlot.endDateTime,
-    };
+      details: {
+        date: selectedSlot.startDateTime,
+        time: `${new Date(selectedSlot.startDateTime).toLocaleTimeString()} - ${new Date(selectedSlot.endDateTime).toLocaleTimeString()}`,
+        description,
+        location: {
+          lat: parseFloat(location.lat),
+          lng: parseFloat(location.lng),
+        },
+      },
+    }
 
     try {
       await axios.post(
-        "http://localhost:5000/api/appointments/createAppointment",
+        'http://localhost:5000/api/requests/createRequest',
         appointmentData
-      );
-      alert("Appointment created successfully!");
+      )
+      alert('Has agendado tu cita con éxito!\nPuedes ver el estado de tu cita en tu perfil.')
+      setDescription('') // Clear the form
+      setLocation({ lat: '', lng: '' })
     } catch (error) {
-      console.error("Error creating appointment:", error);
-      alert("Failed to create appointment.");
+      console.error('Error creating request:', error)
+      alert('Failed to create request.')
     }
-  };
+  }
 
-  if (!service) return <div className="text-center py-20">Cargando servicio...</div>;
+  if (!service) return <div className="text-center py-20">Cargando servicio...</div>
 
   return (
     <div className="pattern-bg bg-cover bg-center min-h-[calc(100vh-4rem)] flex items-center justify-center">
@@ -222,8 +235,38 @@ const ServiceDetail = () => {
               className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-full text-lg font-semibold transition shadow w-full mb-4"
               onClick={handleContactClick}
             >
-              Contactar
+              Agendar
             </button>
+            {/* Conditionally Render Form */}
+            {selectedSlot && (
+              <div className="mt-4">
+                <label className="block text-gray-700 font-medium mb-2">Descripción:</label>
+                <textarea
+                  className="w-full p-2 border rounded-lg mb-4"
+                  rows={3}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Escribe una descripción para la solicitud..."
+                ></textarea>
+                <label className="block text-gray-700 font-medium mb-2">Ubicación:</label>
+                <div className="flex gap-4">
+                  <input
+                    type="text"
+                    className="w-1/2 p-2 border rounded-lg"
+                    value={location.lat}
+                    onChange={(e) => setLocation({ ...location, lat: e.target.value })}
+                    placeholder="Latitud"
+                  />
+                  <input
+                    type="text"
+                    className="w-1/2 p-2 border rounded-lg"
+                    value={location.lng}
+                    onChange={(e) => setLocation({ ...location, lng: e.target.value })}
+                    placeholder="Longitud"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
         {/* Disponibilidad */}
@@ -251,7 +294,7 @@ const ServiceDetail = () => {
                         {slot.start}:00 - {slot.end}:00
                       </td>
                       {weeklySchedule.map((day, j) => {
-                        const slotData = day.slots[i];
+                        const slotData = day.slots[i]
                         return (
                           <td
                             key={j}
@@ -259,14 +302,14 @@ const ServiceDetail = () => {
                               slotData.taken
                                 ? 'bg-red-200 text-red-800'
                                 : selectedSlot?.startDateTime === slotData.startDateTime
-                                ? 'bg-blue-200 text-blue-800'
-                                : 'bg-green-100 text-green-800'
+                                  ? 'bg-blue-200 text-blue-800'
+                                  : 'bg-green-100 text-green-800'
                             }`}
                             onClick={() => handleSlotClick(slotData)}
                           >
                             {slotData.taken ? 'Ocupado' : 'Disponible'}
                           </td>
-                        );
+                        )
                       })}
                     </tr>
                   ))}
@@ -295,8 +338,10 @@ const ServiceDetail = () => {
           </div>
         )}
       </div>
+      
     </div>
-  );
-};
+    
+  )
+}
 
-export default ServiceDetail;
+export default ServiceDetail
