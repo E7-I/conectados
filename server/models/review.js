@@ -3,22 +3,22 @@ import { Schema, model } from 'mongoose';
 const reviewSchema = new Schema({
   serviceId: {
     type: Schema.Types.ObjectId,
-    //ref: 'Service',
+    ref: 'Service',
     required: true,
   },
   appointmentId: {
     type: Schema.Types.ObjectId,
-    //ref: 'Appointment', 
+    ref: 'Appointment', 
     required: true,
   },
   professionalId: {
     type: Number,
-    //ref: 'User',
+    ref: 'User',
     required: true,
   },
   reviewerId: {
     type: Number,
-    //ref: 'User',
+    ref: 'User',
     required: true,
   },
   stars: {
@@ -29,7 +29,6 @@ const reviewSchema = new Schema({
   },
   comment: {
     type: String,
-    required: true,
     maxlength: 500,
   },
   response: {

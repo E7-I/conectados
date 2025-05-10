@@ -5,7 +5,6 @@ const router = express.Router();
 
 router.post('/createReview', reviewController.createReview);
 router.get('/getReview/:id', reviewController.getReviewById);
-router.get('/getAllReviews', reviewController.getAllReviews);
 router.put('/updateReview/:id', reviewController.updateReview);
 router.delete('/deleteReview/:id', reviewController.deleteReview);
 router.get('/getReviewsByProfessionalId/:professionalId', reviewController.getReviewsByProfessionalId);

@@ -1,0 +1,15 @@
+{
+    "_id": "681e7c3b1c2f357a1d99eb44",
+    "professionalid": 14298637,
+    "title": "Electricidad",
+    "description": "Servicio de reparación eléctrica",
+    "images": ["https://example.com/image1.jpg", "https://example.com/image2.jpg"],
+    "video": "https://example.com/video.mp4",
+    "categories": ["Electricidad"],
+    "price": {
+      "min": 50,
+      "max": 100
+    },
+    "averageRating": 4.5,
+    "timesDone": 10
+}
