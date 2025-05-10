@@ -31,6 +31,10 @@ const ProfileSchema = new Schema({
 }, { _id: false });
 
 const LocationSchema = new Schema({
+  address: {
+    type: String,
+    required: true,
+  },
   lat: {
     type: Number,
     required: true,
@@ -40,6 +44,35 @@ const LocationSchema = new Schema({
     required: true,
   },
 }, { _id: false });
+
+const availabilitySchema = new Schema({
+  dayOfWeek: {
+    type: String,
+    enum: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
+  },
+  startHour: {
+    type: String,
+    required: true,
+  },
+  endHour: {
+    type: String,
+    required: true,
+  },
+}, { _id: false })
+
+const certificationSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+  },
+  url: {
+    type: String,
+    required: true,
+  }
+}, { _id: false })
 
 /****************
 ESQUEMA PRINCIPAL
@@ -93,6 +126,36 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  professionalData: {
+    services: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Service',
+        default: [],
+      }
+    ],
+    availability: {
+      type: [availabilitySchema],
+      default: [],
+    },
+    reviews: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Review',
+        default: [],
+      }
+    ],
+    averageRating: {
+      type: Number,
+      default: 0,
+    },
+    certifications: [
+      {
+        type: certificationSchema,
+        default: [],
+      }
+    ],
+  }
 })
 
 const User = model('User', userSchema)

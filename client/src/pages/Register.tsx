@@ -1,6 +1,32 @@
+import axios from 'axios'
 import { useState } from 'react'
 
 const Register = () => {
+  const validaRut = (rutCompleto: string) => {
+    if (!/^\d+-[\dkK]$/.test(rutCompleto)) return false
+
+    const [rut, digv] = rutCompleto.split('-')
+    const dv = calcularDV(rut)
+    return dv === digv.toLowerCase()
+  }
+
+  const calcularDV = (rut: string) => {
+    let suma = 0
+    let multiplo = 2
+
+    for (let i = rut.length - 1; i >= 0; i--) {
+      suma += parseInt(rut[i]) * multiplo
+      multiplo = multiplo === 7 ? 2 : multiplo + 1
+    }
+
+    const resto = 11 - (suma % 11)
+    if (resto === 11) return '0'
+    if (resto === 10) return 'k'
+    return resto.toString()
+  }
+
+  const [rutError, setRutError] = useState(false)
+
   const [formData, setFormData] = useState({
     rut: '',
     username: '',
@@ -10,7 +36,7 @@ const Register = () => {
     email: '',
     role: '',
     location: '',
-    timestamp: new Date().toISOString(),
+    timestamp: new Date().toISOString()
   })
 
   interface ChangeEvent {
@@ -29,17 +55,43 @@ const Register = () => {
     preventDefault: () => void
   }
 
-  const handleSubmit = (e: SubmitEvent) => {
+  const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault()
     if (formData.contrasena !== formData.confirmarContrasena) {
       alert('Las contraseñas no coinciden')
       return
     }
-    console.log('Formulario enviado:', formData)
+
+    const parseData = {
+      ...formData,
+      id: formData.rut,
+      name: formData.nombre,
+      password: formData.contrasena
+    }
+
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/api/users/register',
+        parseData
+      )
+      if (response.status === 201) {
+        alert('Registro exitoso')
+        console.log('Registro exitoso:', response.data)
+      } else {
+        alert('Error en el registro')
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        alert(`${error.response?.data?.message || 'Error en el registro'}`)
+      } else {
+        console.error('Unexpected error:', error)
+        alert('Ocurrió un error inesperado')
+      }
+    }
   }
 
   return (
-    <div className="pattern-bg bg-cover bg-center min-h-screen flex items-center justify-center">
+    <div className="pattern-bg bg-cover bg-center min-h-[calc(100vh-4rem)] flex items-center justify-center">
       <div>
         <h1 className="text-2xl">Formulario de Registro</h1>
         <form onSubmit={handleSubmit} className="mt-4">
@@ -52,9 +104,21 @@ const Register = () => {
               id="rut"
               name="rut"
               value={formData.rut}
-              onChange={handleChange}
-              className="mt-1 block w-full border rounded-md p-2 bg-white"
-              required
+              onChange={(e) => {
+                handleChange(e)
+                setRutError(false)
+              }}
+              onBlur={() => {
+                const cleaned = formData.rut
+                  .replace(/[^0-9kK-]/g, '')
+                  .replace(/-{2,}/g, '-')
+                setFormData((prev) => ({ ...prev, rut: cleaned }))
+                const isValid = validaRut(cleaned)
+                setRutError(!isValid)
+              }}
+              className={`mt-1 block w-full border rounded-md p-2 bg-white ${
+                rutError ? 'border-red-500' : ''
+              }`}
             />
           </div>
           <div className="mb-4">
@@ -69,6 +133,8 @@ const Register = () => {
               onChange={handleChange}
               className="mt-1 block w-full border rounded-md p-2 bg-white"
               required
+              minLength={3}
+              maxLength={30}
             />
           </div>
           <div className="mb-4">
@@ -83,6 +149,8 @@ const Register = () => {
               onChange={handleChange}
               className="mt-1 block w-full border rounded-md p-2 bg-white"
               required
+              minLength={1}
+              maxLength={50}
             />
           </div>
           <div className="mb-4">
@@ -99,7 +167,7 @@ const Register = () => {
               required
             />
           </div>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label htmlFor="role" className="block text-sm font-medium">
               Rol
             </label>
@@ -112,12 +180,12 @@ const Register = () => {
               required
             >
               <option value="" disabled>
-          Selecciona un rol
+                Selecciona un rol
               </option>
               <option value="cliente">Cliente</option>
               <option value="prestador">Prestador de Servicios</option>
             </select>
-          </div>
+          </div> */}
           <div className="mb-4">
             <label htmlFor="contrasena" className="block text-sm font-medium">
               Contraseña
@@ -130,6 +198,10 @@ const Register = () => {
               onChange={handleChange}
               className="mt-1 block w-full border rounded-md p-2 bg-white"
               required
+              minLength={6}
+              maxLength={20}
+              pattern={`^(?!.*${formData.username}).{6,20}$`}
+              title="La contraseña no puede contener el nombre de usuario"
             />
           </div>
           <div className="mb-4">

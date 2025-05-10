@@ -87,6 +87,8 @@ const getWeeklySchedule = (
         return {
           time: `${start}:00 - ${end}:00`,
           taken: isTaken,
+          startDateTime: slotStart.toISOString(),
+          endDateTime: slotEnd.toISOString(),
         };
       }),
     };
@@ -99,8 +101,12 @@ const ServiceDetail = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [weeklySchedule, setWeeklySchedule] = useState<
-    { date: Date; slots: { time: string; taken: boolean }[] }[]
+    { date: Date; slots: { time: string; taken: boolean; startDateTime: string; endDateTime: string }[] }[]
   >([]);
+  const [selectedSlot, setSelectedSlot] = useState<{
+    startDateTime: string;
+    endDateTime: string;
+  } | null>(null);
 
   useEffect(() => {
     const fetchServiceDetails = async () => {
@@ -136,10 +142,40 @@ const ServiceDetail = () => {
     }
   }, [id]);
 
+  const handleSlotClick = (slot: { startDateTime: string; endDateTime: string }) => {
+    if (!slot.taken) {
+      setSelectedSlot(slot);
+    }
+  };
+
+  const handleContactClick = async () => {
+    if (!selectedSlot || !service) return;
+
+    const appointmentData = {
+      clientId: "663c2a87f4e31b1c9ef75abc", // Replace with actual client ID
+      professionalId: service.professionalid,
+      requestId: "663c2c90aa5a4f3d3c9d1234", // Replace with actual request ID
+      serviceId: service._id,
+      startDateTime: selectedSlot.startDateTime,
+      endDateTime: selectedSlot.endDateTime,
+    };
+
+    try {
+      await axios.post(
+        "http://localhost:5000/api/appointments/createAppointment",
+        appointmentData
+      );
+      alert("Appointment created successfully!");
+    } catch (error) {
+      console.error("Error creating appointment:", error);
+      alert("Failed to create appointment.");
+    }
+  };
+
   if (!service) return <div className="text-center py-20">Cargando servicio...</div>;
 
   return (
-    <div className="pattern-bg bg-cover bg-center min-h-screen flex items-center justify-center">
+    <div className="pattern-bg bg-cover bg-center min-h-[calc(100vh-4rem)] flex items-center justify-center">
       <div className="max-w-6xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Left Column: Images */}
@@ -182,7 +218,10 @@ const ServiceDetail = () => {
                 ${service.price.min.toLocaleString()} - ${service.price.max.toLocaleString()}
               </p>
             </div>
-            <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-full text-lg font-semibold transition shadow w-full mb-4">
+            <button
+              className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-full text-lg font-semibold transition shadow w-full mb-4"
+              onClick={handleContactClick}
+            >
               Contactar
             </button>
           </div>
@@ -216,11 +255,14 @@ const ServiceDetail = () => {
                         return (
                           <td
                             key={j}
-                            className={`border px-2 py-2 ${
+                            className={`border px-2 py-2 cursor-pointer ${
                               slotData.taken
                                 ? 'bg-red-200 text-red-800'
+                                : selectedSlot?.startDateTime === slotData.startDateTime
+                                ? 'bg-blue-200 text-blue-800'
                                 : 'bg-green-100 text-green-800'
                             }`}
+                            onClick={() => handleSlotClick(slotData)}
                           >
                             {slotData.taken ? 'Ocupado' : 'Disponible'}
                           </td>

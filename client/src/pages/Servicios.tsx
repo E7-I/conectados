@@ -1,71 +1,72 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import ServiceCard from '../components/ServiceCard';
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import ServiceCard from '../components/ServiceCard'
 
 interface Service {
-  _id: string;
-  title: string;
-  description: string;
-  images: string[];
-  video?: string;
-  categories: string[];
-  price: { min: number; max: number };
-  averageRating: number;
+  _id: string
+  title: string
+  description: string
+  images: string[]
+  video?: string
+  categories: string[]
+  price: { min: number; max: number }
+  averageRating: number
 }
 
 const ServiciosPage: React.FC = () => {
-  const [services, setServices] = useState<Service[]>([]);
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
-  const [category, setCategory] = useState('');
-  const [minRating, setMinRating] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [services, setServices] = useState<Service[]>([])
+  const [minPrice, setMinPrice] = useState('')
+  const [maxPrice, setMaxPrice] = useState('')
+  const [category, setCategory] = useState('')
+  const [minRating, setMinRating] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const fetchServices = async () => {
-    setIsLoading(true);
-    setError(null);
+    setIsLoading(true)
+    setError(null)
     try {
-      const params: Record<string, string> = {};
-      if (minPrice) params.minPrice = minPrice;
-      if (maxPrice) params.maxPrice = maxPrice;
-      if (category) params.category = category;
-      if (minRating) params.minRating = minRating;
-      if (searchTerm) params.search = searchTerm;
+      const params: Record<string, string> = {}
+      if (minPrice) params.minPrice = minPrice
+      if (maxPrice) params.maxPrice = maxPrice
+      if (category) params.category = category
+      if (minRating) params.minRating = minRating
+      if (searchTerm) params.search = searchTerm
 
-      const endpoint = Object.keys(params).length > 0
-        ? 'http://localhost:5000/api/services/getFilteredServices'
-        : 'http://localhost:5000/api/services/getAllServices';
+      const endpoint =
+        Object.keys(params).length > 0
+          ? 'http://localhost:5000/api/services/getFilteredServices'
+          : 'http://localhost:5000/api/services/getAllServices'
 
-      const response = await axios.get<Service[]>(endpoint, { params });
+      const response = await axios.get<Service[]>(endpoint, { params })
 
       if (!response.data) {
-        throw new Error('No data received from server');
+        throw new Error('No data received from server')
       }
 
-      setServices(Array.isArray(response.data) ? response.data : []);
+      setServices(Array.isArray(response.data) ? response.data : [])
     } catch (error) {
-      console.error('Error fetching services:', error);
-      setError('Failed to load services. Please try again later.');
-      setServices([]);
+      console.error('Error fetching services:', error)
+      setError('Failed to load services. Please try again later.')
+      setServices([])
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchServices();
-  }, []);
+    fetchServices()
+  }, [])
 
   const handleFilterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    fetchServices();
-  };
+    e.preventDefault()
+    fetchServices()
+  }
 
   return (
-    <div className="pattern-bg bg-cover bg-center min-h-screen flex items-center justify-center">
-      <div className="min-h-screen bg-gray-100 pattern-bg bg-cover bg-center ">
+    <div className="pattern-bg bg-cover bg-center min-h-[calc(100vh-4rem)] flex items-center justify-center">
+      <div className="min-h-[calc(100vh-4rem)] bg-gray-100 pattern-bg bg-cover bg-center ">
         <header className="bg-blue-600 text-white py-4 px-6">
           <h1 className="text-3xl font-bold">Servicios</h1>
         </header>
@@ -143,12 +144,12 @@ const ServiciosPage: React.FC = () => {
                   onClick={fetchServices}
                   className="ml-4 bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
                 >
-                Reintentar
+                  Reintentar
                 </button>
               </div>
             ) : services.length === 0 ? (
               <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative mb-6">
-              No se encontraron servicios. Prueba con otros filtros.
+                No se encontraron servicios. Prueba con otros filtros.
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -161,7 +162,7 @@ const ServiciosPage: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ServiciosPage;
+export default ServiciosPage
