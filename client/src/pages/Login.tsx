@@ -44,7 +44,7 @@ const Login = () => {
     <div className="pattern-bg bg-cover bg-center min-h-[calc(100vh-4rem)] flex items-center justify-center p-4">
       <div className="flex flex-col md:flex-row w-full max-w-4xl rounded-lg shadow-lg overflow-hidden bg-white">
         {/* Panel Izquierdo */}
-        <div className="w-full md:w-1/2 bg-blue-600 flex items-center justify-center p-6 md:p-8">
+        <div className="w-full md:w-1/2 bg-linear-to-b from-blue-500 to-blue-700 flex items-center justify-center p-6 md:p-8">
           <h2 className="text-white text-2xl font-bold text-center">
             CONECTADOS
           </h2>
@@ -86,7 +86,7 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded-md w-full cursor-pointer hover:bg-blue-600 transition duration-200"
+              className="bg-blue-600 text-white px-4 py-2 rounded-md w-full cursor-pointer hover:bg-blue-700 transition duration-200"
             >
               Iniciar sesión
             </button>
