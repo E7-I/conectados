@@ -6,6 +6,7 @@ import ServiceDetails from './pages/ServiceDetails'
 import Login from './pages/Login'
 import Servicios from './pages/Servicios'
 import Appointments from './pages/Appointments'
+import Prestador from './pages/Prestador'
 import './index.css'
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path="/servicios" element={<Servicios />} />
           <Route path="/citas" element={<Appointments user={fakeUser} />} />
           <Route path="*" element={<div>404 Not Found</div>} />
+          <Route path="/prestador/:professionalid" element={<Prestador />} />
         </Routes>
       </div>
     </BrowserRouter>
