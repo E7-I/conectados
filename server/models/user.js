@@ -32,8 +32,7 @@ const ProfileSchema = new Schema({
 
 const LocationSchema = new Schema({
   address: {
-    type: String,
-    required: true,
+    type: String
   },
   lat: {
     type: Number,
@@ -114,6 +113,7 @@ const userSchema = new Schema({
   location: {
     type: LocationSchema,
     default: {
+      address: '',
       lat: 0,
       lng: 0,
     },
