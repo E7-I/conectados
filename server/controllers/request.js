@@ -75,7 +75,7 @@ const changeStatus = async (req, res) => {
       return res.status(400).json({ message: 'All fields are required.' });
     }
 
-    const updatedRequest = await RequestModel.findByIdAndUpdate(
+    const updatedRequest = await requestModel.findByIdAndUpdate(
       requestId,
       { status },
       { new: true }

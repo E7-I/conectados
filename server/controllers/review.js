@@ -1,5 +1,6 @@
 import User from '../models/user.js'; // Importa el modelo de usuarios
 import Review from '../models/review.js';
+import mongoose from 'mongoose';
 
 // Crear una nueva reseña
 export const createReview = async (req, res) => {
