@@ -1,5 +1,6 @@
 import express from 'express'
 import userController from '../controllers/user.js'
+import { auth } from '../middlewares/auth.js'
 
 const router = express.Router()
 
@@ -10,5 +11,6 @@ router.get('/search', userController.searchUsers)
 // router.get('/', auth, userController.getAllUsers)
 router.get('/', userController.getAllUsers)
 router.put('/update/:id', userController.updateUser)
+router.get('/me', auth, userController.getMe)
 
 export default router

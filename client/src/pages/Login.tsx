@@ -23,6 +23,14 @@ const Login = () => {
         },
         { withCredentials: true }
       )
+      const { token } = response.data.user
+      console.log('Token:', token)
+      if (token) {
+        localStorage.setItem('authToken', token)
+        window.location.href = '/'
+      } else {
+        console.error('No token received')
+      }
       if (response.status === 200) {
         alert('Inicio de sesión exitoso')
       } else {
@@ -41,7 +49,7 @@ const Login = () => {
   }
 
   return (
-    <div className="pattern-bg bg-cover bg-center min-h-[calc(100vh-4rem)] flex items-center justify-center p-4">
+    <div className="pattern-bg bg-cover bg-center min-h-dvh flex items-center justify-center p-4">
       <div className="flex flex-col md:flex-row w-full max-w-4xl rounded-lg shadow-lg overflow-hidden bg-white">
         {/* Panel Izquierdo */}
         <div className="w-full md:w-1/2 bg-linear-to-b from-blue-500 to-blue-700 flex items-center justify-center p-6 md:p-8">
@@ -92,7 +100,10 @@ const Login = () => {
             </button>
             <p className="text-sm text-center text-gray-600 mt-4">
               ¿No tienes una cuenta?{' '}
-              <a href="/registro" className="text-blue-500 hover:underline font-medium">
+              <a
+                href="/registro"
+                className="text-blue-500 hover:underline font-medium"
+              >
                 Regístrate
               </a>
             </p>

@@ -191,9 +191,9 @@ const updateUserValidation = (data) => {
   }
 
   if (location) {
-    if (!location.lat || !location.lng) {
-      return { valid: false, message: 'Both latitude and longitude are required' }
-    }
+    // if (!location.lat || !location.lng) {
+    //   return { valid: false, message: 'Both latitude and longitude are required' }
+    // }
 
     if (isNaN(location.lat) || isNaN(location.lng)) {
       return { valid: false, message: 'Invalid location format' }

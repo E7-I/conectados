@@ -73,7 +73,7 @@ const login = async (req, res) => {
       $or: [{ username }, { email }]
     })
     if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' })
+      return res.status(404).json({ message: 'User not found' })
     }
 
     // comparar contraseña
@@ -84,10 +84,10 @@ const login = async (req, res) => {
 
     // crear token JWT
     const token = jwt.createToken(user)
+    // console.log('Generated Token:', token)
 
     res.cookie('token', token, {
       httpOnly: true,
-      // secure: process.env.NODE_ENV === 'production',
       sameSite: 'Strict',
       maxAge: 30 * 24 * 60 * 60 * 1000 // 30 días
     })
@@ -132,17 +132,28 @@ const getUserById = async (req, res) => {
   }
 }
 
+const getMe = async (req, res) => {
+  try {
+    const userId = req.user.id
+    const user = await User.findOne({ id: userId }).select('-password')
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+    return res.status(200).json({ user })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ message: 'Server error' })
+  }
+}
+
 const getAllUsers = async (req, res) => {
-  const page = parseInt(req.query.page) || 1    // página actual
+  const page = parseInt(req.query.page) || 1 // página actual
   const limit = parseInt(req.query.limit) || 10 // cantidad de elementos por página
 
   const skip = (page - 1) * limit
 
   try {
-    const users = await User.find()
-      .select('-password')
-      .skip(skip)
-      .limit(limit)
+    const users = await User.find().select('-password').skip(skip).limit(limit)
 
     const totalUsers = await User.countDocuments()
 
@@ -150,8 +161,8 @@ const getAllUsers = async (req, res) => {
       users,
       totalUsers,
       currentPage: page,
-      totalPages: Math.ceil(totalUsers / limit),
-    });
+      totalPages: Math.ceil(totalUsers / limit)
+    })
   } catch (error) {
     console.error('Error retrieving users:', error)
     return res.status(500).json({ message: 'Internal server error' })
@@ -183,7 +194,7 @@ const searchUsers = async (req, res) => {
       users,
       totalUsers,
       currentPage: page,
-      totalPages: Math.ceil(totalUsers / limit),
+      totalPages: Math.ceil(totalUsers / limit)
     })
   } catch (error) {
     console.error('Error searching users:', error)
@@ -216,7 +227,8 @@ const updateUser = async (req, res) => {
     if (updates.profile) user.profile = updates.profile
     if (updates.location) user.location = updates.location
     if (updates.role) user.role = updates.role
-    if (updates.professionalData) user.professionalData = updates.professionalData
+    if (updates.professionalData)
+      user.professionalData = updates.professionalData
 
     user.updatedAt = new Date()
 
@@ -238,6 +250,7 @@ export default {
   register,
   login,
   getUserById,
+  getMe,
   getAllUsers,
   searchUsers,
   updateUser

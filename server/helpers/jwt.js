@@ -27,8 +27,15 @@ const createToken = (user) => {
 }
 
 const decodeToken = (token) => {
-  const decoded = jwt.decode(token, secret, true)
-  return decoded
+  try {
+    // console.log('Decoding token:', token);
+    // console.log('Using secret:', secret);
+    const decoded = jwt.decode(token, secret, true);
+    return decoded;
+  } catch (error) {
+    console.error('Error decoding token:', error.message);
+    throw error;
+  }
 }
 
 const verifyToken = (token) => {
@@ -46,5 +53,6 @@ const verifyToken = (token) => {
 export default {
   createToken,
   decodeToken,
-  verifyToken
+  verifyToken,
+  secret
 }
