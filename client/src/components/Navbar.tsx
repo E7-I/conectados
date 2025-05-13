@@ -1,6 +1,14 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const Navbar = () => {
+
+  const location = useLocation()
+
+  // Ocultar navbar en rutas específicas
+  const hideNavbar = ['/login', '/registro'].includes(location.pathname)
+
+  if (hideNavbar) return null
+
   return (
     <nav className="bg-blue-600 p-4 text-white flex justify-between h-16 items-center">
       <Link to="/" className="font-bold text-xl">
