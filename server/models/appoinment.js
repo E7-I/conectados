@@ -6,8 +6,8 @@ const appointmentSchema = new Schema({
     ref: 'User',
     required: true,
   },
-  profesiolanlId: {
-    type: Schema.Types.ObjectId,
+  professionalId: {
+    type: Number,
     ref: 'User',
     required: true,
   },

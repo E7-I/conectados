@@ -1,0 +1,10 @@
+{
+  "serviceId": "681d5a0fcdeac28b79b5cb7a",
+  "clientId": 12345678,
+  "professionalId": 14298637,
+  "dateTime": {
+    "start": "2025-05-09T10:00:00.000Z",
+    "end": "2025-05-09T11:00:00.000Z"
+  },
+  "status": "agendado"
+}

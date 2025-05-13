@@ -8,7 +8,7 @@ const reviewSchema = new Schema({
   },
   appointmentId: {
     type: Schema.Types.ObjectId,
-    ref: 'Appointment',
+    ref: 'Appointment', 
     required: true,
   },
   professionalId: {
@@ -29,7 +29,6 @@ const reviewSchema = new Schema({
   },
   comment: {
     type: String,
-    required: true,
     maxlength: 500,
   },
   response: {
