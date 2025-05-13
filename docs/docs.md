@@ -13,6 +13,10 @@ Actualmente se tienen implementados los siguientes requisitos funcionales:
 - Gestión de servicios por parte del prestador
 - Vista de las reseñas de un servicio
 
+Asimismo, se configuró Discord como principal canal de comunicación y espacio de reuniones, reemplazando a Slack. Esta decisión se basó en la mayor comodidad y familiaridad del equipo con Discord, sin comprometer la funcionalidad requerida para el proyecto. Además, se integró el seguimiento del repositorio mediante GitHub, permitiendo una mejor sincronización entre el control de versiones y la gestión del proyecto.
+
+Paralelamente, se utilizó Jira junto con un tablero Kanban para organizar y delegar tareas. Cada ticket generado en Jira se reflejaba en una branch específica del repositorio, lo que facilitó el control del flujo de trabajo y aseguró una estructura ordenada en el desarrollo colaborativo.
+
 # Arquitectura del proyecto
 
 ![alt text](arquitectura.png)
@@ -46,12 +50,13 @@ En cuanto a los endpoints, separamos las rutas de acuerdo con su funcionalidad d
 - `/api/services`: Para la gestión de los servicios.
 - `/api/reviews`: Para la gestión de las reseñas.
 - `/api/appointments`: Para la gestión de las citas.
+- `/api/request`: Para la gestion de las peticiones a agendar un servicio
 
 Para ver más detalles sobre estos, véase [Endpoints Backend](https://github.com/E7-I/conectados/wiki/Endpoints).
 
 # Pruebas
 
-Se utilizó Cypress para las pruebas, las cuales se pueden ver en el directorio [cypress](https://github.com/E7-I/conectados/tree/develop/assets).
+Se utilizó Cypress para las pruebas, las cuales se pueden ver en el directorio [cypress](https://github.com/E7-I/conectados/tree/main/cypress).
 
 # Tecnologías de aplicación y su relación con las pruebas
 
@@ -76,10 +81,13 @@ Vista de un servicio en específico
 ![alt text](image-4.png)  
 ![alt text](image-5.png)  
 Vista del panel de un prestador de servicio para agendar/agregar servicios
-
+![alt text](image-6.png)
+tablero kanban en jira
+![alt text](image-7.png)
+integracion de github con discord
 # Estrategia de Pruebas
 
-# ¿Qué estoy probando?
+## ¿Qué estoy probando?
 
 Estamos probando la **API** de la aplicación, enfocándonos en los endpoints de **usuarios**, **servicios** y **reseñas**.  
 Validamos tanto el **funcionamiento correcto** (casos exitosos) como el **manejo de errores** (casos negativos).
