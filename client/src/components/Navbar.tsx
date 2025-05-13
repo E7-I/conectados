@@ -2,10 +2,10 @@ import { Link, useLocation } from 'react-router-dom'
 
 const Navbar = () => {
 
-  const location = useLocation();
+  const location = useLocation()
 
   // Ocultar navbar en rutas específicas
-  const hideNavbar = ['/login', '/register'].includes(location.pathname)
+  const hideNavbar = ['/login', '/registro'].includes(location.pathname)
 
   if (hideNavbar) return null
 

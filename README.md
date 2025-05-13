@@ -52,6 +52,33 @@ Each professional can create their profile, upload photos of their work, indicat
     npm run dev
     ```
 
+## 🧪 Running Cypress Tests
+
+To run the end-to-end tests with Cypress:
+
+1. Go to the directory:
+    ```bash
+    cd conectados
+    ```
+2. Install dependencies (if you haven't already):
+    ```bash
+    npm install
+    ```
+3. Run the Cypress test runner:
+    ```bash
+    npx cypress open
+    ```
+   This will open the Cypress UI where you can select and run tests.
+
+   Or, to run tests in headless mode:
+    ```bash
+    npx cypress run
+    ```
+
+## 📄 Documentation
+
+You can find the full documentation [here](https://github.com/E7-I/conectados/blob/develop/docs/docs.md).
+
 ## 📑 License
 
 Licensed under [MIT](./LICENSE).
