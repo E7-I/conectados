@@ -85,6 +85,8 @@ Vista del panel de un prestador de servicio para agendar/agregar servicios
 tablero kanban en jira
 ![alt text](image-7.png)
 integracion de github con discord
+![alt text](image-8.png)
+Carta Gantt realizada directamente en Jira con [planyway](https://planyway.com/jira) con los tickets del tablero Kanban.
 # Estrategia de Pruebas
 
 ## ¿Qué estoy probando?
