@@ -79,7 +79,7 @@ To run the end-to-end tests with Cypress:
 
 ## 📄 Documentation
 
-You can find the full documentation [here](https://github.com/E7-I/conectados/blob/develop/docs/docs.md).
+You can find the full documentation [here](https://github.com/E7-I/conectados/blob/main/docs/docs.md).
 
 ## 📑 License
 
