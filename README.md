@@ -1,3 +1,9 @@
+## Videos entregas
+
+- Entrega 1: https://youtu.be/La4DcXs8v98
+
+---
+
 <div align="center">
     <img alt="Conectados hero image" src="./assets/hero.webp" />
 </div>
