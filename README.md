@@ -32,6 +32,8 @@ Each professional can create their profile, upload photos of their work, indicat
 
 4. Create a `.env` file in the server directory with the content specified in the `.env.example` file. Make sure to set the `MONGODB_URI` variable with your MongoDB connection string.
 
+5. Run your MongoDB database
+
 5. Now you can run the server:
     ```bash
     npm run dev
@@ -82,3 +84,12 @@ You can find the full documentation [here](https://github.com/E7-I/conectados/bl
 ## 📑 License
 
 Licensed under [MIT](./LICENSE).
+
+# Roles
+- Myckoll Winchester – Team Lead and Testing 
+
+- Esteban Castillo – Backend Developer and Testing Support
+
+- David Carrasco – Frontend Developer
+
+- Rodrigo Alfaro – Full-Stack Developer and Integration
