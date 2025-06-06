@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-    "target": "ES6",
-    "lib": ["ES6"],
+    "target": "es2016",
+    "lib": ["es2016"],
     "module": "ES6",
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
