@@ -144,11 +144,12 @@ const ServiceDetail = () => {
     }
   }, [id])
 
-  const handleSlotClick = (slot: { startDateTime: string; endDateTime: string }) => {
+  const handleSlotClick = (slot: { startDateTime: string; endDateTime: string; taken: boolean }) => {
     if (!slot.taken) {
       setSelectedSlot(slot)
     }
   }
+
 
   const handleContactClick = async () => {
     if (!selectedSlot || !service || !description || !location.lat || !location.lng) {
