@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 
 const categories = [
   'Belleza',
@@ -200,6 +200,7 @@ const Prestador = () => {
             <select
               className="border border-gray-300 rounded px-2 py-1"
               value={selectedHours || ''}
+              title="Selecciona la duración del servicio"
               onChange={(e) => setSelectedHours(Number(e.target.value))}
             >
               <option value="" disabled>
@@ -253,6 +254,7 @@ const Prestador = () => {
                       <select
                         className="border border-gray-300 rounded px-2 py-1"
                         value={appointment.status}
+                        title="Estado de la Cita"
                         onChange={(e) => handleStatusChange(appointment._id, e.target.value)}
                       >
                         <option value="pendiente">Pendiente</option>
@@ -275,6 +277,7 @@ const Prestador = () => {
             type="text"
             className="border border-gray-300 rounded px-2 py-1 w-full"
             value={serviceTitle}
+            title="Título del Servicio"
             onChange={(e) => setServiceTitle(e.target.value)}
           />
         </div>
@@ -283,6 +286,7 @@ const Prestador = () => {
           <textarea
             className="border border-gray-300 rounded px-2 py-1 w-full"
             value={serviceDescription}
+            title="Descripción del Servicio"
             onChange={(e) => setServiceDescription(e.target.value)}
           />
         </div>
@@ -292,6 +296,7 @@ const Prestador = () => {
             type="text"
             className="border border-gray-300 rounded px-2 py-1 w-full"
             value={serviceImages.join(', ')}
+            title="URLs de Imágenes del Servicio"
             onChange={(e) => setServiceImages(e.target.value.split(',').map((url) => url.trim()))}
           />
         </div>
@@ -301,6 +306,7 @@ const Prestador = () => {
             multiple
             className="border border-gray-300 rounded px-2 py-1 w-full"
             value={serviceCategories}
+            title="Categorías del Servicio"
             onChange={(e) =>
               setServiceCategories(Array.from(e.target.selectedOptions, (option) => option.value))
             }
@@ -318,6 +324,7 @@ const Prestador = () => {
             type="number"
             className="border border-gray-300 rounded px-2 py-1 w-full"
             value={servicePriceMin || ''}
+            title="Precio Mínimo del Servicio"
             onChange={(e) => setServicePriceMin(Number(e.target.value))}
           />
         </div>
@@ -327,6 +334,7 @@ const Prestador = () => {
             type="number"
             className="border border-gray-300 rounded px-2 py-1 w-full"
             value={servicePriceMax || ''}
+            title="Precio Máximo del Servicio"
             onChange={(e) => setServicePriceMax(Number(e.target.value))}
           />
         </div>

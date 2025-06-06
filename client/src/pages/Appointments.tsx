@@ -101,7 +101,7 @@ const Appointments = ({ user }: { user: User }) => {
 
   useEffect(() => {
     fetchAppointments()
-  }, [])
+  })
 
   if (loading) return <p>Cargando...</p>
 
@@ -175,6 +175,7 @@ const Appointments = ({ user }: { user: User }) => {
               <select
                 name="professionalId"
                 value={newAppointment.professionalId}
+                title="Selecciona un profesional"
                 onChange={(e) =>
                   setNewAppointment({ ...newAppointment, professionalId: e.target.value })
                 }

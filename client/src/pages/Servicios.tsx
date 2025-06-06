@@ -23,7 +23,7 @@ const ServiciosPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const fetchServices = async () => {
+  const fetchServices = React.useCallback(async () => {
     setIsLoading(true)
     setError(null)
     try {
@@ -53,11 +53,11 @@ const ServiciosPage: React.FC = () => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [minPrice, maxPrice, category, minRating, searchTerm])
 
   useEffect(() => {
     fetchServices()
-  }, [])
+  }, [fetchServices])
 
   const handleFilterSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -98,6 +98,7 @@ const ServiciosPage: React.FC = () => {
               />
               <select
                 value={category}
+                title='Categoría'
                 onChange={(e) => setCategory(e.target.value)}
                 className="p-2 border rounded w-full"
               >
