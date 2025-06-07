@@ -1,7 +1,4 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy Node.js app to Azure Web App - ConectadosE7
+name: Conectados Server Deployment
 
 on:
   push:
@@ -28,15 +25,17 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
+        working-directory: ./client
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
+        working-directory: ./client
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: release.zip
+          path: ./client/release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -53,6 +52,7 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
+        working-directory: ./client
       
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
@@ -60,5 +60,5 @@ jobs:
         with:
           app-name: 'ConectadosE7'
           slot-name: 'Production'
-          package: .
+          package: ./client
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B64EE36159904EC0AB6DE953ECB0ACDD }}
