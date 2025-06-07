@@ -3,38 +3,38 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 
 type Appointment = {
-  clientId: string;
-  profesiolanlId: string;
-  requestId: string;
-  serviceId: string;
-  dateTime: { start: string; end: string };
-  status: string;
-};
+  clientId: string
+  profesiolanlId: string
+  requestId: string
+  serviceId: string
+  dateTime: { start: string; end: string }
+  status: string
+}
 
 type Review = {
-  _id: string;
-  serviceId: string;
-  appointmentId: string;
-  professionalId: string;
-  reviewerId: string;
-  stars: number;
-  comment: string;
-  response?: string | null;
-  createdAt: string;
-};
+  _id: string
+  serviceId: string
+  appointmentId: string
+  professionalId: string
+  reviewerId: string
+  stars: number
+  comment: string
+  response?: string | null
+  createdAt: string
+}
 
 type Service = {
-  _id: string;
-  professionalid: string;
-  title: string;
-  description: string;
-  images?: string[];
-  video?: string;
-  categories: string[];
-  price: { min: number; max: number };
-  averageRating: number;
-  timesDone: number;
-};
+  _id: string
+  professionalid: string
+  title: string
+  description: string
+  images?: string[]
+  video?: string
+  categories: string[]
+  price: { min: number; max: number }
+  averageRating: number
+  timesDone: number
+}
 
 const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
 
@@ -88,9 +88,9 @@ const getWeeklySchedule = (
           time: `${start}:00 - ${end}:00`,
           taken: isTaken,
           startDateTime: slotStart.toISOString(),
-          endDateTime: slotEnd.toISOString(),
+          endDateTime: slotEnd.toISOString()
         }
-      }),
+      })
     }
   })
 }
@@ -101,11 +101,19 @@ const ServiceDetail = () => {
   const [reviews, setReviews] = useState<Review[]>([])
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [weeklySchedule, setWeeklySchedule] = useState<
-    { date: Date; slots: { time: string; taken: boolean; startDateTime: string; endDateTime: string }[] }[]
+    {
+      date: Date
+      slots: {
+        time: string
+        taken: boolean
+        startDateTime: string
+        endDateTime: string
+      }[]
+    }[]
   >([])
   const [selectedSlot, setSelectedSlot] = useState<{
-    startDateTime: string;
-    endDateTime: string;
+    startDateTime: string
+    endDateTime: string
   } | null>(null)
   const [description, setDescription] = useState('')
   const [location, setLocation] = useState({ lat: '', lng: '' })
@@ -121,7 +129,7 @@ const ServiceDetail = () => {
         setSelectedImage(serviceData.images ? serviceData.images[0] : null)
 
         const appointmentsResponse = await axios.get(
-          `http://localhost:5000/api/appointments/getAppointmentByServicelId/${id}` 
+          `http://localhost:5000/api/appointments/getAppointmentByServicelId/${id}`
         )
         const appointmentsData: Appointment[] = appointmentsResponse.data
 
@@ -144,15 +152,24 @@ const ServiceDetail = () => {
     }
   }, [id])
 
-  const handleSlotClick = (slot: { startDateTime: string; endDateTime: string; taken: boolean }) => {
+  const handleSlotClick = (slot: {
+    startDateTime: string
+    endDateTime: string
+    taken: boolean
+  }) => {
     if (!slot.taken) {
       setSelectedSlot(slot)
     }
   }
 
-
   const handleContactClick = async () => {
-    if (!selectedSlot || !service || !description || !location.lat || !location.lng) {
+    if (
+      !selectedSlot ||
+      !service ||
+      !description ||
+      !location.lat ||
+      !location.lng
+    ) {
       alert('Please fill in all fields.')
       return
     }
@@ -167,9 +184,9 @@ const ServiceDetail = () => {
         description,
         location: {
           lat: parseFloat(location.lat),
-          lng: parseFloat(location.lng),
-        },
-      },
+          lng: parseFloat(location.lng)
+        }
+      }
     }
 
     try {
@@ -177,7 +194,9 @@ const ServiceDetail = () => {
         'http://localhost:5000/api/requests/createRequest',
         appointmentData
       )
-      alert('Has agendado tu cita con éxito!\nPuedes ver el estado de tu cita en tu perfil.')
+      alert(
+        'Has agendado tu cita con éxito!\nPuedes ver el estado de tu cita en tu perfil.'
+      )
       setDescription('') // Clear the form
       setLocation({ lat: '', lng: '' })
     } catch (error) {
@@ -186,7 +205,8 @@ const ServiceDetail = () => {
     }
   }
 
-  if (!service) return <div className="text-center py-20">Cargando servicio...</div>
+  if (!service)
+    return <div className="text-center py-20">Cargando servicio...</div>
 
   return (
     <div className="pattern-bg bg-cover bg-center min-h-[calc(100vh-4rem)] flex items-center justify-center">
@@ -221,15 +241,22 @@ const ServiceDetail = () => {
           </div>
           {/* Right Column: Details */}
           <div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">{service.title}</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">
+              {service.title}
+            </h1>
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-yellow-500 text-lg">⭐ {service.averageRating.toFixed(1)}</span>
-              <span className="text-gray-600">({service.timesDone} servicios realizados)</span>
+              <span className="text-yellow-500 text-lg">
+                ⭐ {service.averageRating.toFixed(1)}
+              </span>
+              <span className="text-gray-600">
+                ({service.timesDone} servicios realizados)
+              </span>
             </div>
             <p className="text-gray-700 mb-6">{service.description}</p>
             <div className="mb-6">
               <p className="text-2xl font-semibold text-blue-600">
-                ${service.price.min.toLocaleString()} - ${service.price.max.toLocaleString()}
+                ${service.price.min.toLocaleString()} - $
+                {service.price.max.toLocaleString()}
               </p>
             </div>
             <button
@@ -241,7 +268,9 @@ const ServiceDetail = () => {
             {/* Conditionally Render Form */}
             {selectedSlot && (
               <div className="mt-4">
-                <label className="block text-gray-700 font-medium mb-2">Descripción:</label>
+                <label className="block text-gray-700 font-medium mb-2">
+                  Descripción:
+                </label>
                 <textarea
                   className="w-full p-2 border rounded-lg mb-4"
                   rows={3}
@@ -249,20 +278,26 @@ const ServiceDetail = () => {
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Escribe una descripción para la solicitud..."
                 ></textarea>
-                <label className="block text-gray-700 font-medium mb-2">Ubicación:</label>
+                <label className="block text-gray-700 font-medium mb-2">
+                  Ubicación:
+                </label>
                 <div className="flex gap-4">
                   <input
                     type="text"
                     className="w-1/2 p-2 border rounded-lg"
                     value={location.lat}
-                    onChange={(e) => setLocation({ ...location, lat: e.target.value })}
+                    onChange={(e) =>
+                      setLocation({ ...location, lat: e.target.value })
+                    }
                     placeholder="Latitud"
                   />
                   <input
                     type="text"
                     className="w-1/2 p-2 border rounded-lg"
                     value={location.lng}
-                    onChange={(e) => setLocation({ ...location, lng: e.target.value })}
+                    onChange={(e) =>
+                      setLocation({ ...location, lng: e.target.value })
+                    }
                     placeholder="Longitud"
                   />
                 </div>
@@ -273,7 +308,9 @@ const ServiceDetail = () => {
         {/* Disponibilidad */}
         {weeklySchedule.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">Disponibilidad semanal</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">
+              Disponibilidad semanal
+            </h2>
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm text-center border-collapse">
                 <thead>
@@ -302,7 +339,8 @@ const ServiceDetail = () => {
                             className={`border px-2 py-2 cursor-pointer ${
                               slotData.taken
                                 ? 'bg-red-200 text-red-800'
-                                : selectedSlot?.startDateTime === slotData.startDateTime
+                                : selectedSlot?.startDateTime ===
+                                    slotData.startDateTime
                                   ? 'bg-blue-200 text-blue-800'
                                   : 'bg-green-100 text-green-800'
                             }`}
@@ -320,28 +358,32 @@ const ServiceDetail = () => {
           </div>
         )}
         {/* Reviews Section */}
-        {(
+        {
           <div className="mt-12">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">Opiniones de clientes</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">
+              Opiniones de clientes
+            </h2>
             <div className="space-y-6">
               {reviews.map((rev, idx) => (
                 <div key={idx} className="bg-gray-100 p-4 rounded-lg shadow">
                   <div className="flex justify-between mb-1">
-                    <span className="font-semibold text-gray-800">{rev.comment}</span>
+                    <span className="font-semibold text-gray-800">
+                      {rev.comment}
+                    </span>
                     <span className="text-yellow-500">⭐ {rev.stars}/5</span>
                   </div>
                   {rev.response && (
-                    <p className="text-gray-500 text-sm mt-2">Respuesta: {rev.response}</p>
+                    <p className="text-gray-500 text-sm mt-2">
+                      Respuesta: {rev.response}
+                    </p>
                   )}
                 </div>
               ))}
             </div>
           </div>
-        )}
+        }
       </div>
-      
     </div>
-    
   )
 }
 

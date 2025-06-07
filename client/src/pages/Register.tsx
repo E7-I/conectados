@@ -102,9 +102,7 @@ const Register = () => {
 
         {/* Panel Derecho - Formulario */}
         <div className="w-full md:w-1/2 p-6 md:p-8">
-          <h1 className="text-xl font-bold text-center mb-6">
-            Registro
-          </h1>
+          <h1 className="text-xl font-bold text-center mb-6">Registro</h1>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label htmlFor="rut" className="block text-sm font-medium">
@@ -229,7 +227,10 @@ const Register = () => {
             </button>
             <p className="text-sm text-center text-gray-600 mt-4">
               ¿Ya tienes una cuenta?{' '}
-              <a href="/login" className="text-blue-500 hover:underline font-medium">
+              <a
+                href="/login"
+                className="text-blue-500 hover:underline font-medium"
+              >
                 Inicia sesión
               </a>
             </p>

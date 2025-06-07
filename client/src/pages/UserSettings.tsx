@@ -169,14 +169,16 @@ const UserSettings = () => {
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
     setErrors({ ...errors, [name]: '' })
   }
 
-  type HandleNestedChangeSection = 'profile' | 'location';
-  type HandleNestedChangeField = string;
+  type HandleNestedChangeSection = 'profile' | 'location'
+  type HandleNestedChangeField = string
 
   const handleNestedChange = (
     section: HandleNestedChangeSection,
@@ -224,7 +226,7 @@ const UserSettings = () => {
   }
 
   interface RemoveContact {
-    (index: number): void;
+    (index: number): void
   }
 
   const removeContact: RemoveContact = (index) => {
@@ -238,14 +240,14 @@ const UserSettings = () => {
   }
 
   interface HandleAvailabilityChange {
-    (
-      index: number,
-      field: keyof Availability,
-      value: string
-    ): void;
+    (index: number, field: keyof Availability, value: string): void
   }
 
-  const handleAvailabilityChange: HandleAvailabilityChange = (index, field, value) => {
+  const handleAvailabilityChange: HandleAvailabilityChange = (
+    index,
+    field,
+    value
+  ) => {
     const newAvailability = [...formData.professionalData.availability]
     newAvailability[index] = { ...newAvailability[index], [field]: value }
     setFormData({
@@ -275,7 +277,7 @@ const UserSettings = () => {
   }
 
   interface RemoveAvailability {
-    (index: number): void;
+    (index: number): void
   }
 
   const removeAvailability: RemoveAvailability = (index) => {
@@ -291,14 +293,14 @@ const UserSettings = () => {
   }
 
   interface HandleCertificationChange {
-    (
-      index: number,
-      field: keyof Certification,
-      value: string
-    ): void;
+    (index: number, field: keyof Certification, value: string): void
   }
 
-  const handleCertificationChange: HandleCertificationChange = (index, field, value) => {
+  const handleCertificationChange: HandleCertificationChange = (
+    index,
+    field,
+    value
+  ) => {
     const newCertifications = [...formData.professionalData.certifications]
     newCertifications[index] = { ...newCertifications[index], [field]: value }
     setFormData({
@@ -328,7 +330,7 @@ const UserSettings = () => {
   }
 
   interface RemoveCertification {
-    (index: number): void;
+    (index: number): void
   }
 
   const removeCertification: RemoveCertification = (index) => {
@@ -351,7 +353,10 @@ const UserSettings = () => {
       password: '',
       profile: { bio: '', photoUrl: '', contactInfo: [] as string[] },
       location: { address: '', lat: '', lng: '' },
-      professionalData: { availability: [] as string[], certifications: [] as string[] }
+      professionalData: {
+        availability: [] as string[],
+        certifications: [] as string[]
+      }
     }
     let isValid = true
 
@@ -386,7 +391,8 @@ const UserSettings = () => {
 
     if (
       formData.location.lat &&
-      (Number(formData.location.lat) < -90 || Number(formData.location.lat) > 90)
+      (Number(formData.location.lat) < -90 ||
+        Number(formData.location.lat) > 90)
     ) {
       newErrors.location.lat = 'Latitud debe estar entre -90 y 90'
       isValid = false
@@ -394,7 +400,8 @@ const UserSettings = () => {
 
     if (
       formData.location.lng &&
-      (Number(formData.location.lng) < -180 || Number(formData.location.lng) > 180)
+      (Number(formData.location.lng) < -180 ||
+        Number(formData.location.lng) > 180)
     ) {
       newErrors.location.lng = 'Longitud debe estar entre -180 y 180'
       isValid = false
@@ -434,7 +441,10 @@ const UserSettings = () => {
       })
 
       // Validate certifications only for professional role and if certifications exist
-      if (formData.role === 'professional' && formData.professionalData.certifications.length > 0) {
+      if (
+        formData.role === 'professional' &&
+        formData.professionalData.certifications.length > 0
+      ) {
         formData.professionalData.certifications.forEach((cert, index) => {
           if (!cert.name) {
             newErrors.professionalData.certifications[index] =
@@ -455,21 +465,21 @@ const UserSettings = () => {
   }
 
   interface Updates {
-    username: string;
-    name: string;
-    email: string;
-    password?: string;
-    role: string;
-    profile: Profile;
+    username: string
+    name: string
+    email: string
+    password?: string
+    role: string
+    profile: Profile
     location: {
-      address: string;
-      lat: number;
-      lng: number;
-    };
+      address: string
+      lat: number
+      lng: number
+    }
     professionalData?: {
-      availability: Availability[];
-      certifications?: Certification[];
-    };
+      availability: Availability[]
+      certifications?: Certification[]
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -836,7 +846,7 @@ const UserSettings = () => {
                             )
                           }
                           className="mt-1 block w-1/3 border rounded-md p-2 border-gray-300"
-                          aria-label='Día de la semana'
+                          aria-label="Día de la semana"
                         >
                           <option value="Lunes">Lunes</option>
                           <option value="Martes">Martes</option>
