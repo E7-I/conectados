@@ -98,7 +98,7 @@ const ServiciosPage: React.FC = () => {
               />
               <select
                 value={category}
-                title='Categoría'
+                title="Categoría"
                 onChange={(e) => setCategory(e.target.value)}
                 className="p-2 border rounded w-full"
               >

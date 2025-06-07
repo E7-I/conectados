@@ -1,16 +1,16 @@
 // components/ServiceCard.tsx
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 interface ServiceCardProps {
-  _id: string;
-  title: string;
-  description: string;
-  images: string[];
-  video?: string;
-  categories: string[];
-  price: { min: number; max: number };
-  averageRating: number;
+  _id: string
+  title: string
+  description: string
+  images: string[]
+  video?: string
+  categories: string[]
+  price: { min: number; max: number }
+  averageRating: number
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({
@@ -20,16 +20,16 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   images,
   categories,
   price,
-  averageRating,
+  averageRating
 }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleClick = () => {
-    navigate(`/service/${_id}`);
-  };
+    navigate(`/service/${_id}`)
+  }
 
   return (
-    <div 
+    <div
       className="border rounded-lg shadow p-4 bg-white hover:shadow-md transition duration-200 cursor-pointer"
       onClick={handleClick}
     >
@@ -42,17 +42,20 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
       <p className="text-sm text-gray-600 mb-2 line-clamp-2">{description}</p>
       <div className="text-sm text-gray-700">
         <p>
-          <span className="font-medium">Precio:</span> ${price.min} - ${price.max}
+          <span className="font-medium">Precio:</span> ${price.min} - $
+          {price.max}
         </p>
         <p>
-          <span className="font-medium">Categorías:</span> {categories.join(', ')}
+          <span className="font-medium">Categorías:</span>{' '}
+          {categories.join(', ')}
         </p>
         <p>
-          <span className="font-medium">Rating:</span> {averageRating.toFixed(1)} / 5
+          <span className="font-medium">Rating:</span>{' '}
+          {averageRating.toFixed(1)} / 5
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ServiceCard;
+export default ServiceCard
