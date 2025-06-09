@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "dev": "node --watch server.js",
-    "test": "cross-env NODE_ENV=test node --watch server.js"
+    "test": "echo 'No tests specified' && exit 0",
+    "build": "echo 'No build step for server'"
   },
   "author": "E7",
   "license": "MIT",
