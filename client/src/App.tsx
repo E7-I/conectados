@@ -32,7 +32,7 @@ function App() {
           <Route path="*" element={<div>404 Not Found</div>} />
           <Route path="/prestador/:professionalid" element={<Prestador />} />
           <Route path="/settings" element={<UserSettings />} />
-          <Route path="/user-dashboard" element={<UserDashboard />} />
+          <Route path="/dashboard/users" element={<UserDashboard />} />
         </Routes>
       </div>
     </BrowserRouter>

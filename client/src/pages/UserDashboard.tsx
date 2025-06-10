@@ -314,7 +314,7 @@ const AdminDashboard = () => {
                 {users.map((user: User) => (
                   <tr
                     key={user.id}
-                    className={`hover:bg-gray-50 ${user.banned ? 'bg-red-50' : ''}`}
+                    className="hover:bg-gray-50"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
@@ -417,7 +417,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Footer */}
-        <div className="mt-6 text-center">
+        {/* <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
             <a
               href="/dashboard"
@@ -426,7 +426,7 @@ const AdminDashboard = () => {
               Volver al dashboard
             </a>
           </p>
-        </div>
+        </div> */}
       </div>
 
       {/* Toast Container */}
