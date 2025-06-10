@@ -7,34 +7,18 @@ export const createReview = async (req, res) => {
   try {
     const { serviceId, appointmentId, professionalId, reviewerId, stars, comment } = req.body;
 
-    // Verificar que todos los campos requeridos estén presentes
-    if (!serviceId || !appointmentId || !professionalId || !reviewerId || !stars || !comment) {
+    // Validaciones básicas
+    if (!serviceId || !appointmentId || !professionalId || !reviewerId || !stars) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
-
-    // Verificar que el professionalId exista en la colección de usuarios
-    const professional = await User.findOne({ id: professionalId }); // Buscar por `id` (Number)
-    if (!professional) {
-      return res.status(400).json({ error: 'Professional not found' });
-    }
-
-    // Verificar que el reviewerId exista en la colección de usuarios
-    const reviewer = await User.findOne({ id: reviewerId }); // Buscar por `id` (Number)
-    if (!reviewer) {
-      return res.status(400).json({ error: 'Reviewer not found' });
-    }
-
-    // Validar que las estrellas estén dentro del rango permitido
     if (stars < 1 || stars > 5) {
       return res.status(400).json({ error: 'Stars must be between 1 and 5' });
     }
-
-    // Validar que el comentario no exceda el límite de caracteres
-    if (comment.length > 500) {
+    if (comment && comment.length > 500) {
       return res.status(400).json({ error: 'Comment exceeds maximum length of 500 characters' });
     }
 
-    // Crear y guardar la reseña
+    // Crear la reseña
     const review = new Review({
       serviceId,
       appointmentId,
@@ -42,7 +26,9 @@ export const createReview = async (req, res) => {
       reviewerId,
       stars,
       comment,
+      response: ' '
     });
+
     const savedReview = await review.save();
     res.status(201).json(savedReview);
   } catch (error) {
@@ -62,6 +48,28 @@ export const getReviewById = async (req, res) => {
     res.status(200).json(review);
   } catch (error) {
     console.error('Error fetching review:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+export const getReviewByReviewerId = async (req, res) => {
+  try {
+    const { reviewerId } = req.params;
+
+    // Validar que el reviewerId sea un ObjectId válido
+    if (!mongoose.Types.ObjectId.isValid(reviewerId)) {
+      return res.status(400).json({ error: 'Invalid reviewerId format' });
+    }
+
+    // Buscar reseñas por reviewerId
+    const reviews = await Review.find({ reviewerId }).populate('serviceId appointmentId');
+    if (!reviews || reviews.length === 0) {
+      return res.status(404).json({ error: 'No reviews found for this reviewer' });
+    }
+
+    res.status(200).json(reviews);
+  } catch (error) {
+    console.error('Error fetching reviews by reviewer ID:', error);
     res.status(500).json({ error: 'Server error' });
   }
 };
@@ -156,5 +164,6 @@ export default {
   updateReview,
   deleteReview,
   getReviewsByProfessionalId,
-  getReviewsByServiceId
+  getReviewsByServiceId,
+  getReviewByReviewerId,
 };

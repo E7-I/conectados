@@ -8,6 +8,7 @@ import Servicios from './pages/Servicios'
 import Appointments from './pages/Appointments'
 import Prestador from './pages/Prestador'
 import UserSettings from './pages/UserSettings'
+import UserReviews from './pages/UserReviews'
 import './index.css'
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route path="*" element={<div>404 Not Found</div>} />
           <Route path="/prestador/:professionalid" element={<Prestador />} />
           <Route path="/settings" element={<UserSettings />} />
+          <Route path="/reviews" element={<UserReviews />} />
         </Routes>
       </div>
     </BrowserRouter>
