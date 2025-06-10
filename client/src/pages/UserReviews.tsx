@@ -522,7 +522,7 @@ const UserReviews = () => {
         {/* Left Panel */}
         <div className="w-full bg-gradient-to-b from-blue-500 to-blue-700 flex items-center justify-center p-6 md:p-8">
           <h2 className="text-white text-2xl font-bold text-center">
-            CONFIGURACIÓN
+            Reseñas y Citas Completadas
           </h2>
         </div>
         {/* Completed Appointments Section */}
