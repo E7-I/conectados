@@ -163,7 +163,7 @@ const AdminDashboard = () => {
             )
           )
           setUpdatingUser(null)
-          toast.success(`Usuario ${action}do exitosamente`, {
+          toast.success(`Usuario ${action.slice(0, -1)}do exitosamente`, {
             position: 'top-right',
             autoClose: 3000,
             hideProgressBar: false,
@@ -197,31 +197,31 @@ const AdminDashboard = () => {
     })
   }
 
-  const getRoleBadgeColor = (role: string) => {
-    switch (role) {
-    case 'administrator':
-      return 'bg-red-100 text-red-800'
-    case 'professional':
-      return 'bg-blue-100 text-blue-800'
-    case 'client':
-      return 'bg-green-100 text-green-800'
-    default:
-      return 'bg-gray-100 text-gray-800'
-    }
-  }
+  // const getRoleBadgeColor = (role: string) => {
+  //   switch (role) {
+  //   case 'administrator':
+  //     return 'bg-red-100 text-red-800'
+  //   case 'professional':
+  //     return 'bg-blue-100 text-blue-800'
+  //   case 'client':
+  //     return 'bg-green-100 text-green-800'
+  //   default:
+  //     return 'bg-gray-100 text-gray-800'
+  //   }
+  // }
 
-  const getRoleDisplayName = (role: string) => {
-    switch (role) {
-    case 'administrator':
-      return 'Administrador'
-    case 'professional':
-      return 'Profesional'
-    case 'client':
-      return 'Cliente'
-    default:
-      return role
-    }
-  }
+  // const getRoleDisplayName = (role: string) => {
+  //   switch (role) {
+  //   case 'administrator':
+  //     return 'Administrador'
+  //   case 'professional':
+  //     return 'Profesional'
+  //   case 'client':
+  //     return 'Cliente'
+  //   default:
+  //     return role
+  //   }
+  // }
 
   if (loading) {
     return (
@@ -331,13 +331,13 @@ const AdminDashboard = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center space-x-2">
-                        <div className="w-[100px]">
+                        {/* <div className="w-[100px]">
                           <span
                             className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getRoleBadgeColor(user.role)}`}
                           >
                             {getRoleDisplayName(user.role)}
                           </span>
-                        </div>
+                        </div> */}
                         <select
                           value={user.role}
                           onChange={(e) =>
