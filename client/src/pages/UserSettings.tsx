@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 
 const UserSettings = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     username: '',
     name: '',
     email: '',
@@ -11,7 +11,7 @@ const UserSettings = () => {
     profile: {
       bio: '',
       photoUrl: '',
-      contactInfo: [] // Initialize as empty array
+      contactInfo: [] as ContactInfo[]
     },
     location: {
       address: '',
@@ -20,20 +20,20 @@ const UserSettings = () => {
     },
     professionalData: {
       availability: [{ dayOfWeek: 'Lunes', startHour: '', endHour: '' }],
-      certifications: [], // Changed to empty array
+      certifications: [],
       averageRating: 0
     }
   })
 
   const [userId, setUserId] = useState('')
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<Errors>({
     username: '',
     name: '',
     email: '',
     password: '',
     profile: { bio: '', photoUrl: '', contactInfo: [] },
     location: { address: '', lat: '', lng: '' },
-    professionalData: { availability: [], certifications: [] } // Changed to empty array
+    professionalData: { availability: [], certifications: [] }
   })
 
   const [loading, setLoading] = useState(true)
@@ -102,13 +102,89 @@ const UserSettings = () => {
     fetchUserData()
   }, [])
 
-  const handleChange = (e) => {
+  interface ContactInfo {
+    type: string
+    value: string
+  }
+
+  interface Profile {
+    bio: string
+    photoUrl: string
+    contactInfo: ContactInfo[]
+  }
+
+  interface Location {
+    address: string
+    lat: number | string
+    lng: number | string
+  }
+
+  interface Availability {
+    dayOfWeek: string
+    startHour: string
+    endHour: string
+  }
+
+  interface Certification {
+    name: string
+    description: string
+    url: string
+  }
+
+  interface ProfessionalData {
+    availability: Availability[]
+    certifications: Certification[]
+    averageRating: number
+  }
+
+  interface FormData {
+    username: string
+    name: string
+    email: string
+    password: string
+    role: string
+    profile: Profile
+    location: Location
+    professionalData: ProfessionalData
+  }
+
+  interface Errors {
+    username: string
+    name: string
+    email: string
+    password: string
+    profile: {
+      bio: string
+      photoUrl: string
+      contactInfo: string[]
+    }
+    location: {
+      address: string
+      lat: string
+      lng: string
+    }
+    professionalData: {
+      availability: string[]
+      certifications: string[]
+    }
+  }
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
     setErrors({ ...errors, [name]: '' })
   }
 
-  const handleNestedChange = (section, field, value) => {
+  type HandleNestedChangeSection = 'profile' | 'location'
+  type HandleNestedChangeField = string
+
+  const handleNestedChange = (
+    section: HandleNestedChangeSection,
+    field: HandleNestedChangeField,
+    value: string
+  ) => {
     setFormData({
       ...formData,
       [section]: { ...formData[section], [field]: value }
@@ -119,8 +195,12 @@ const UserSettings = () => {
     })
   }
 
-  const handleContactChange = (index, field, value) => {
-    const newContactInfo = [...formData.profile.contactInfo]
+  const handleContactChange = (
+    index: number,
+    field: 'type' | 'value',
+    value: string
+  ) => {
+    const newContactInfo: ContactInfo[] = [...formData.profile.contactInfo]
     newContactInfo[index] = { ...newContactInfo[index], [field]: value }
     setFormData({
       ...formData,
@@ -145,7 +225,11 @@ const UserSettings = () => {
     })
   }
 
-  const removeContact = (index) => {
+  interface RemoveContact {
+    (index: number): void
+  }
+
+  const removeContact: RemoveContact = (index) => {
     setFormData({
       ...formData,
       profile: {
@@ -155,7 +239,15 @@ const UserSettings = () => {
     })
   }
 
-  const handleAvailabilityChange = (index, field, value) => {
+  interface HandleAvailabilityChange {
+    (index: number, field: keyof Availability, value: string): void
+  }
+
+  const handleAvailabilityChange: HandleAvailabilityChange = (
+    index,
+    field,
+    value
+  ) => {
     const newAvailability = [...formData.professionalData.availability]
     newAvailability[index] = { ...newAvailability[index], [field]: value }
     setFormData({
@@ -184,7 +276,11 @@ const UserSettings = () => {
     })
   }
 
-  const removeAvailability = (index) => {
+  interface RemoveAvailability {
+    (index: number): void
+  }
+
+  const removeAvailability: RemoveAvailability = (index) => {
     setFormData({
       ...formData,
       professionalData: {
@@ -196,7 +292,15 @@ const UserSettings = () => {
     })
   }
 
-  const handleCertificationChange = (index, field, value) => {
+  interface HandleCertificationChange {
+    (index: number, field: keyof Certification, value: string): void
+  }
+
+  const handleCertificationChange: HandleCertificationChange = (
+    index,
+    field,
+    value
+  ) => {
     const newCertifications = [...formData.professionalData.certifications]
     newCertifications[index] = { ...newCertifications[index], [field]: value }
     setFormData({
@@ -225,7 +329,11 @@ const UserSettings = () => {
     })
   }
 
-  const removeCertification = (index) => {
+  interface RemoveCertification {
+    (index: number): void
+  }
+
+  const removeCertification: RemoveCertification = (index) => {
     setFormData({
       ...formData,
       professionalData: {
@@ -238,14 +346,17 @@ const UserSettings = () => {
   }
 
   const validateForm = () => {
-    const newErrors = {
+    const newErrors: Errors = {
       username: '',
       name: '',
       email: '',
       password: '',
-      profile: { bio: '', photoUrl: '', contactInfo: [] },
+      profile: { bio: '', photoUrl: '', contactInfo: [] as string[] },
       location: { address: '', lat: '', lng: '' },
-      professionalData: { availability: [], certifications: [] }
+      professionalData: {
+        availability: [] as string[],
+        certifications: [] as string[]
+      }
     }
     let isValid = true
 
@@ -280,7 +391,8 @@ const UserSettings = () => {
 
     if (
       formData.location.lat &&
-      (formData.location.lat < -90 || formData.location.lat > 90)
+      (Number(formData.location.lat) < -90 ||
+        Number(formData.location.lat) > 90)
     ) {
       newErrors.location.lat = 'Latitud debe estar entre -90 y 90'
       isValid = false
@@ -288,7 +400,8 @@ const UserSettings = () => {
 
     if (
       formData.location.lng &&
-      (formData.location.lng < -180 || formData.location.lng > 180)
+      (Number(formData.location.lng) < -180 ||
+        Number(formData.location.lng) > 180)
     ) {
       newErrors.location.lng = 'Longitud debe estar entre -180 y 180'
       isValid = false
@@ -328,7 +441,10 @@ const UserSettings = () => {
       })
 
       // Validate certifications only for professional role and if certifications exist
-      if (formData.role === 'professional' && formData.professionalData.certifications.length > 0) {
+      if (
+        formData.role === 'professional' &&
+        formData.professionalData.certifications.length > 0
+      ) {
         formData.professionalData.certifications.forEach((cert, index) => {
           if (!cert.name) {
             newErrors.professionalData.certifications[index] =
@@ -348,14 +464,32 @@ const UserSettings = () => {
     return isValid
   }
 
-  const handleSubmit = async (e) => {
+  interface Updates {
+    username: string
+    name: string
+    email: string
+    password?: string
+    role: string
+    profile: Profile
+    location: {
+      address: string
+      lat: number
+      lng: number
+    }
+    professionalData?: {
+      availability: Availability[]
+      certifications?: Certification[]
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (!validateForm()) {
       return
     }
 
-    const updates = {
+    const updates: Updates = {
       username: formData.username,
       name: formData.name,
       email: formData.email,
@@ -410,7 +544,7 @@ const UserSettings = () => {
         alert('Perfil actualizado exitosamente')
         console.log('Usuario actualizado:', response.data.user)
       }
-    } catch (error) {
+    } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const message =
           error.response?.data?.message || 'Error al actualizar el perfil'
@@ -622,6 +756,7 @@ const UserSettings = () => {
                         handleContactChange(index, 'type', e.target.value)
                       }
                       className="mt-1 block w-1/3 border rounded-md p-2 border-gray-300"
+                      aria-label="Tipo de contacto"
                     >
                       <option value="email">Email</option>
                       <option value="phone">Teléfono</option>
@@ -711,6 +846,7 @@ const UserSettings = () => {
                             )
                           }
                           className="mt-1 block w-1/3 border rounded-md p-2 border-gray-300"
+                          aria-label="Día de la semana"
                         >
                           <option value="Lunes">Lunes</option>
                           <option value="Martes">Martes</option>

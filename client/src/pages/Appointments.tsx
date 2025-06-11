@@ -28,7 +28,7 @@ const Appointments = ({ user }: { user: User }) => {
     professionalId: '',
     serviceId: '',
     details: { date: '', time: '', description: '', location: '' },
-    status: 'pending',
+    status: 'pending'
   })
 
   const isProfessional = user.role === 'professional'
@@ -44,9 +44,9 @@ const Appointments = ({ user }: { user: User }) => {
         date: '2025-05-10',
         time: '10:00',
         description: 'Consulta electrica',
-        location: 'Consultorio 1',
+        location: 'Consultorio 1'
       },
-      status: 'pending',
+      status: 'pending'
     },
     {
       _id: '2',
@@ -57,23 +57,30 @@ const Appointments = ({ user }: { user: User }) => {
         date: '2025-05-12',
         time: '14:00',
         description: 'Consulta gasfitería',
-        location: 'Consultorio 2',
+        location: 'Consultorio 2'
       },
-      status: 'pending',
-    },
+      status: 'pending'
+    }
   ]
 
   const fakeProfessionals = [
-    { _id: 'professional1', name: 'Juan Pérez', service: 'Consulta gasfitería' },
-    { _id: 'professional2', name: 'Ana Gómez', service: 'Consulta electrica' },
-  ] 
+    {
+      _id: 'professional1',
+      name: 'Juan Pérez',
+      service: 'Consulta gasfitería'
+    },
+    { _id: 'professional2', name: 'Ana Gómez', service: 'Consulta electrica' }
+  ]
 
   const fetchAppointments = () => {
     setAppointments(fakeAppointments)
     setLoading(false)
   }
 
-  const handleStatusChange = (id: string, newStatus: 'pending' | 'accepted' | 'rejected' | 'cancelled') => {
+  const handleStatusChange = (
+    id: string,
+    newStatus: 'pending' | 'accepted' | 'rejected' | 'cancelled'
+  ) => {
     setAppointments((prevAppointments) =>
       prevAppointments.map((appt) =>
         appt._id === id ? { ...appt, status: newStatus } : appt
@@ -83,7 +90,10 @@ const Appointments = ({ user }: { user: User }) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setNewAppointment({ ...newAppointment, details: { ...newAppointment.details, [name]: value } })
+    setNewAppointment({
+      ...newAppointment,
+      details: { ...newAppointment.details, [name]: value }
+    })
   }
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -95,13 +105,13 @@ const Appointments = ({ user }: { user: User }) => {
       professionalId: '',
       serviceId: '',
       details: { date: '', time: '', description: '', location: '' },
-      status: 'pending',
+      status: 'pending'
     })
   }
 
   useEffect(() => {
     fetchAppointments()
-  }, [])
+  })
 
   if (loading) return <p>Cargando...</p>
 
@@ -111,8 +121,9 @@ const Appointments = ({ user }: { user: User }) => {
         {isProfessional ? 'Solicitudes de Citas' : 'Mis Citas'}
       </h1>
 
-      <p className="mb-4">Bienvenido, {user.role === 'professional' ? 'Profesional' : 'Cliente'}.</p>  
-
+      <p className="mb-4">
+        Bienvenido, {user.role === 'professional' ? 'Profesional' : 'Cliente'}.
+      </p>
 
       {!isProfessional ? (
         <p></p>
@@ -120,27 +131,43 @@ const Appointments = ({ user }: { user: User }) => {
         <p>No hay citas registradas.</p>
       ) : (
         <div className="space-y-4">
-          {appointments.filter(appt => appt.status === 'pending').length === 0 ? (
-            <p>No hay solicitudes pendientes.</p>
-          ) : (
-            appointments
-              .filter(appt => appt.status === 'pending')
-              .map((appt) => (
-                <div key={appt._id} className="border rounded-lg p-4 shadow-md bg-white">
-                  <p><strong>Cliente:</strong> {appt.clientId}</p>
-                </div>
-              ))
-          )}
+          {appointments.filter((appt) => appt.status === 'pending').length ===
+          0 ? (
+              <p>No hay solicitudes pendientes.</p>
+            ) : (
+              appointments
+                .filter((appt) => appt.status === 'pending')
+                .map((appt) => (
+                  <div
+                    key={appt._id}
+                    className="border rounded-lg p-4 shadow-md bg-white"
+                  >
+                    <p>
+                      <strong>Cliente:</strong> {appt.clientId}
+                    </p>
+                  </div>
+                ))
+            )}
           {appointments.map((appt) => (
             <div
               key={appt._id}
               className="border rounded-lg p-4 shadow-md bg-white"
             >
-              <p><strong>Cliente:</strong> {appt.clientId}</p>
-              <p><strong>Fecha:</strong> {appt.details.date} {appt.details.time}</p>
-              <p><strong>Descripción:</strong> {appt.details.description}</p>
-              <p><strong>Ubicación:</strong> {appt.details.location}</p>
-              <p><strong>Estado:</strong> {appt.status}</p>
+              <p>
+                <strong>Cliente:</strong> {appt.clientId}
+              </p>
+              <p>
+                <strong>Fecha:</strong> {appt.details.date} {appt.details.time}
+              </p>
+              <p>
+                <strong>Descripción:</strong> {appt.details.description}
+              </p>
+              <p>
+                <strong>Ubicación:</strong> {appt.details.location}
+              </p>
+              <p>
+                <strong>Estado:</strong> {appt.status}
+              </p>
               {appt.status === 'pending' && (
                 <div className="mt-2 space-x-2">
                   <button
@@ -162,21 +189,27 @@ const Appointments = ({ user }: { user: User }) => {
         </div>
       )}
 
-
       {/* Formulario para que el cliente agende una cita */}
       {!isProfessional && (
         <div className="mt-8 p-4 border rounded-lg bg-white shadow-md">
           <h2 className="text-xl mb-4">Agendar Cita</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label htmlFor="professionalId" className="block text-sm font-medium">
+              <label
+                htmlFor="professionalId"
+                className="block text-sm font-medium"
+              >
                 Elija un Profesional
               </label>
               <select
                 name="professionalId"
                 value={newAppointment.professionalId}
+                title="Selecciona un profesional"
                 onChange={(e) =>
-                  setNewAppointment({ ...newAppointment, professionalId: e.target.value })
+                  setNewAppointment({
+                    ...newAppointment,
+                    professionalId: e.target.value
+                  })
                 }
                 className="mt-1 block w-full border rounded-md p-2"
                 required
@@ -221,7 +254,10 @@ const Appointments = ({ user }: { user: User }) => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="description" className="block text-sm font-medium">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium"
+              >
                 Descripción
               </label>
               <input
