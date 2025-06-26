@@ -60,6 +60,6 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'E7Backend'
+          app-name: 'ConectadosE7'
           slot-name: 'Production'
           package: .  # Deploy current directory, where downloaded artifact contents now exist
