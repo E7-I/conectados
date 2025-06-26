@@ -36,8 +36,8 @@ const ServiciosPage: React.FC = () => {
 
       const endpoint =
         Object.keys(params).length > 0
-          ? 'http://localhost:5000/api/services/getFilteredServices'
-          : 'http://localhost:5000/api/services/getAllServices'
+          ? 'https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/services/getFilteredServices'
+          : 'https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/services/getAllServices'
 
       const response = await axios.get<Service[]>(endpoint, { params })
 
