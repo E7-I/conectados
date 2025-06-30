@@ -2,12 +2,12 @@
     "routes": [
         {
             "route": "/*",
-            "rewrite": "/home.tsx",
+            "serve": "/home.tsx",
             "statusCode": 200
         },
         {
             "route": "/login",
-            "rewrite": "/login.tsx",
+            "serve": "/login.tsx",
             "statusCode": 200
         }
     ]
