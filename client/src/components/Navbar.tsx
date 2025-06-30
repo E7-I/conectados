@@ -16,6 +16,9 @@ const Navbar = () => {
       <div className="space-x-4">
         <Link to="/">Inicio</Link>
         <Link to="/servicios">Servicios</Link>
+        <Link to="/registro">Registro</Link>
+        <Link to="/prestador/123">Perfil Profesional</Link>
+        <Link to="/settings">Configuración</Link>
       </div>
     </nav>
   )
