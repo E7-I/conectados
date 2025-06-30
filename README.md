@@ -1,6 +1,7 @@
 ## Videos entregas
 
 - Entrega 1: https://youtu.be/La4DcXs8v98
+- Entrega 2: https://youtu.be/bLjPgf6ektc
 
 ---
 
@@ -82,20 +83,32 @@ To run the end-to-end tests with Cypress:
     ```bash
     npx cypress run
     ```
+## Production Branch and GitHub Actions
+
+The [live](https://github.com/E7-I/conectados/tree/live) branch was created to host the code currently in production. Within this branch, in the [.github/workflows](https://github.com/E7-I/conectados/tree/live/.github/workflows) directory, you can find our GitHub Actions, which are responsible for executing the entire workflow for deployment on Azure.
+
+These actions are divided into two files:
+
+- [Frontend](https://github.com/E7-I/conectados/blob/live/.github/workflows/azure-static-web-apps-delightful-flower-08c627f1e.yml)
+- [Backend](https://github.com/E7-I/conectados/blob/live/.github/workflows/live_conectadose7.yml)
+
 
 ## 📄 Documentation
 
-You can find the full documentation [here](https://github.com/E7-I/conectados/blob/main/docs/docs.md).
+You can find the full documentation:
+-  [Here](https://github.com/E7-I/conectados/blob/main/docs/docs.md)
+- [Wiki](https://github.com/E7-I/conectados/wiki/Endpoints)
+- [DeepWiki](https://deepwiki.com/E7-I/conectados/1-overview)
 
 ## 📑 License
 
 Licensed under [MIT](./LICENSE).
 
 # Roles
-- Myckoll Winchester – Team Lead and Testing 
+- Myckoll Winchester @MyckollWinchester – Team Lead and Testing 
 
-- Esteban Castillo – Backend Developer and Testing Support
+- Esteban Castillo @EstebanCastilloTello – Backend Developer and Testing Support
 
-- David Carrasco – Frontend Developer
+- David Carrasco @DacoDark – Frontend Developer
 
-- Rodrigo Alfaro – Full-Stack Developer and Integration
+- Rodrigo Alfaro @Rodrigo-Alfaro – Full-Stack Developer and Integration
