@@ -1,0 +1,14 @@
+{
+    "routes": [
+        {
+            "route": "/*",
+            "rewrite": "/home.tsx",
+            "statusCode": 200
+        },
+        {
+            "route": "/login",
+            "rewrite": "/login.tsx",
+            "statusCode": 200
+        }
+    ]
+}
