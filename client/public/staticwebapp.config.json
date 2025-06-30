@@ -1,14 +1,13 @@
 {
     "routes": [
         {
-            "route": "/",
-            "serve": "/home.tsx",
-            "statusCode": 200
-        },
-        {
-            "route": "/login",
-            "serve": "/login.tsx",
+            "route": "/*",
+            "serve": "/index.html",
             "statusCode": 200
         }
-    ]
+    ],
+    "navigationFallback": {
+        "rewrite": "/index.html",
+        "exclude": ["/images/*.{png,jpg,gif}", "/css/*"]
+    }
 }
