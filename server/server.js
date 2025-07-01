@@ -27,7 +27,7 @@ mongoose.connect(process.env.MONGODB_URI)
   .catch(err => console.error('MongoDB connection error:', err))
 
 app.use(cors({
-  origin: 'https://delightful-flower-08c627f1e.6.azurestaticapps.net/',
+  origin: 'https://delightful-flower-08c627f1e.6.azurestaticapps.net',
   credentials: true
 }));
 
