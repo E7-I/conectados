@@ -11,6 +11,7 @@ import Servicios from './pages/Servicios'
 import Appointments from './pages/Appointments'
 import Prestador from './pages/Prestador'
 import UserSettings from './pages/UserSettings'
+import UserReviews from './pages/UserReviews'
 import UserDashboard from './pages/UserDashboard'
 import NotFound from './pages/NotFound'
 import './index.css'
@@ -38,6 +39,7 @@ function App() {
             <Route path="/settings" element={<UserSettings />} />
             <Route path="/dashboard/users" element={<UserDashboard />} />
             <Route path="*" element={<NotFound />} />
+            <Route path="/reviews" element={<UserReviews />} />
           </Routes>
         </main>
         <ToastContainer
