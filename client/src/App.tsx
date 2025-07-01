@@ -1,4 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { AuthProvider } from './contexts/AuthContext'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Register from './pages/Register'
@@ -9,6 +12,7 @@ import Appointments from './pages/Appointments'
 import Prestador from './pages/Prestador'
 import UserSettings from './pages/UserSettings'
 import UserDashboard from './pages/UserDashboard'
+import NotFound from './pages/NotFound'
 import './index.css'
 
 function App() {
@@ -18,24 +22,38 @@ function App() {
     nombre: 'needhelp1',
   }
   return (
-    <BrowserRouter>
-      <Navbar />
-      <div>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/registro" element={<Register />} />
-          <Route path="/servicio/:id" element={<ServiceDetails />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/Service/:id" element={<ServiceDetails />} />
-          <Route path="/servicios" element={<Servicios />} />
-          <Route path="/citas" element={<Appointments user={fakeUser} />} />
-          <Route path="*" element={<div>404 Not Found</div>} />
-          <Route path="/prestador/:professionalid" element={<Prestador />} />
-          <Route path="/settings" element={<UserSettings />} />
-          <Route path="/dashboard/users" element={<UserDashboard />} />
-        </Routes>
-      </div>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Navbar />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/registro" element={<Register />} />
+            <Route path="/servicio/:id" element={<ServiceDetails />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/Service/:id" element={<ServiceDetails />} />
+            <Route path="/servicios" element={<Servicios />} />
+            <Route path="/citas" element={<Appointments user={fakeUser} />} />
+            <Route path="/prestador/:professionalid" element={<Prestador />} />
+            <Route path="/settings" element={<UserSettings />} />
+            <Route path="/dashboard/users" element={<UserDashboard />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </BrowserRouter>
+    </AuthProvider>
   )
 }
 

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
+import { toast } from 'react-toastify'
 
 const UserSettings = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -526,7 +527,7 @@ const UserSettings = () => {
     try {
       const token = localStorage.getItem('authToken')
       if (!token) {
-        alert('No se encontró el token de autenticación')
+        toast.error('No se encontró el token de autenticación')
         return
       }
 
@@ -541,20 +542,20 @@ const UserSettings = () => {
       )
 
       if (response.status === 200) {
-        alert('Perfil actualizado exitosamente')
+        toast.success('Perfil actualizado exitosamente')
         console.log('Usuario actualizado:', response.data.user)
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const message =
           error.response?.data?.message || 'Error al actualizar el perfil'
-        alert(message)
+        toast.error(message)
         if (error.response?.status === 404) {
           console.error('Usuario no encontrado')
         }
       } else {
         console.error('Error inesperado:', error)
-        alert('Ocurrió un error inesperado')
+        toast.error('Ocurrió un error inesperado')
       }
     }
   }
