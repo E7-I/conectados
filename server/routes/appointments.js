@@ -8,6 +8,7 @@ router.get('/getAppointmentByProfessionalId/:professionalId', appointmentControl
 router.get('/getAppointmentByServicelId/:serviceId', appointmentController.getAppointmentByServicelId);
 router.put('/changeStatus', appointmentController.changeStatus);
 router.get('/getAppointmentByClientId/:clientId', appointmentController.getAppointmentByClientId);
+router.get('/getAppointmentByRequestId/:requestId', appointmentController.getAppointmentByRequestId);
 
 
 

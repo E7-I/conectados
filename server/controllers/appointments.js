@@ -102,10 +102,25 @@ const changeStatus = async (req, res) => {
     }
 }
 
+const getAppointmentByRequestId = async (req, res) => {
+    try {
+        const { requestId } = req.params;
+        const appointments = await Appointment.find({ requestId });
+        if (!appointments || appointments.length === 0) {
+            return res.status(404).json({ error: 'No appointments found for this request' });
+        }
+        res.status(200).json(appointments);
+    } catch (error) {
+        console.error('Error fetching appointments by request ID:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+}
+
 export default {
     newAppointment,
     getAppointmentByProfessionalId,
     getAppointmentByServicelId,
     changeStatus,
-    getAppointmentByClientId
+    getAppointmentByClientId,
+    getAppointmentByRequestId
 };

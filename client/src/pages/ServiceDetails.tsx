@@ -118,6 +118,7 @@ const ServiceDetail = () => {
   } | null>(null)
   const [description, setDescription] = useState('')
   const [location, setLocation] = useState({ lat: '', lng: '' })
+  const [userId, setUserId] = useState('')
 
   // Function to render star rating
   const renderStars = (rating: number) => {
@@ -224,6 +225,31 @@ const ServiceDetail = () => {
     }
   }, [id])
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('authToken')
+        if (!token) {
+          console.error('No authentication token found')
+          return
+        }
+
+        const response = await axios.get('http://localhost:5000/api/users/me', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+
+        const user = response.data.user
+        setUserId(user._id) // Use _id for MongoDB ObjectId
+      } catch (err) {
+        console.error('Error fetching user data:', err)
+      }
+    }
+
+    fetchUserData()
+  }, [])
+
   const handleSlotClick = (slot: {
     startDateTime: string
     endDateTime: string
@@ -240,14 +266,15 @@ const ServiceDetail = () => {
       !service ||
       !description ||
       !location.lat ||
-      !location.lng
+      !location.lng ||
+      !userId // Add this validation
     ) {
-      toast.error('Please fill in all fields.')
+      toast.error('Please fill in all fields and ensure you are logged in.')
       return
     }
 
     const appointmentData = {
-      clientId: '68636275d92cc6dce4d421db', // placeholder, should be the actual client id,
+      clientId: userId, // Use the actual user ID instead of placeholder
       professionalId: service.professionalid,
       serviceId: service._id,
       details: {
@@ -271,6 +298,7 @@ const ServiceDetail = () => {
       )
       setDescription('') // Clear the form
       setLocation({ lat: '', lng: '' })
+      setSelectedSlot(null) // Clear selected slot
     } catch (error) {
       console.error('Error creating request:', error)
       toast.error('Failed to create request.')
