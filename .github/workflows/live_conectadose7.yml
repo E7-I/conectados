@@ -88,7 +88,7 @@ jobs:
           for TEST in Home.test.js Services.test.js Register.test.js Login.test.js; do
             echo "Running $TEST..."
             node $TEST || EXIT_CODE=1
-            sleep 10
+            sleep 5
           done
           exit $EXIT_CODE
         

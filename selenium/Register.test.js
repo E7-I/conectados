@@ -1,7 +1,8 @@
 const { Builder, By, until } = require('selenium-webdriver');
+const { createDriver } = require('./Driver'); // Import the createDriver function
 
 (async function registerTest() {
-    let driver = await new Builder().forBrowser('chrome').build();
+    let driver = await createDriver();
     try {
         await driver.get('https://delightful-flower-08c627f1e.6.azurestaticapps.net/registro');
         
