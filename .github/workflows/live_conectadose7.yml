@@ -77,11 +77,11 @@ jobs:
           node-version: '22.x'
 
       - name: Install Selenium test dependencies
-        working-directory: ./selenium-tests
+        working-directory: ./selenium
         run: npm install
 
       - name: Run Selenium tests
-        working-directory: ./selenium-tests
+        working-directory: ./selenium
         run: |
           set -e
           EXIT_CODE=0
