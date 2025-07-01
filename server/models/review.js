@@ -17,7 +17,7 @@ const reviewSchema = new Schema({
     required: true,
   },
   reviewerId: {
-    type: Number,
+    type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
