@@ -1,5 +1,5 @@
 const { Builder, By, until } = require('selenium-webdriver');
-const { createDriver } = require('./Driver'); // Import the createDriver function
+const { createDriver } = require('./Driver'); 
 
 (async function servicesTest() {
     let driver = await createDriver();

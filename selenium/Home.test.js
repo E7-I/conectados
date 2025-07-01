@@ -1,14 +1,10 @@
 // selenium-tests/smokeHomePage.test.js
-const { Builder} = require('selenium-webdriver');
-const chrome =  require('selenium-webdriver/chrome');
-const {v4: uuidv4} = require('uuid');
-
+const { Builder, By, until } = require('selenium-webdriver');
+const { createDriver } = require('./Driver'); 
 
 
 (async function smokeTest() {
-    const uniqueProfile = `/tmp/selenium-profile-${uuidv4()}`;
-    const options = new chrome.Options().addArguments(`--user-data-dir=${uniqueProfile}`);
-    let driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
+    let driver = await createDriver();
     try {
         await driver.get('https://delightful-flower-08c627f1e.6.azurestaticapps.net/');
         await driver.wait(until.elementLocated(By.css('h1')), 10000);
