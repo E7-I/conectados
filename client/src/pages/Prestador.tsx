@@ -102,12 +102,12 @@ const Prestador = () => {
     const fetchAppointmentsAndServices = async () => {
       try {
         const appointmentsResponse = await axios.get(
-          `http://localhost:5000/api/requests/getRequestByProfessionalId/${professionalid}`
+          `https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/requests/getRequestByProfessionalId/${professionalid}`
         )
         const appointmentsData: Appointment[] = appointmentsResponse.data
 
         const servicesResponse = await axios.get(
-          `http://localhost:5000/api/services/getServicesProfessionalId/${professionalid}`
+          `https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/services/getServicesProfessionalId/${professionalid}`
         )
         const servicesData: Service[] = servicesResponse.data
 
@@ -132,7 +132,7 @@ const Prestador = () => {
   ) => {
     try {
       // Update the status in the backend
-      await axios.put('http://localhost:5000/api/requests/changeStatus', {
+      await axios.put('https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/requests/changeStatus', {
         requestId: appointmentId,
         status: newStatus
       })
@@ -203,8 +203,10 @@ const Prestador = () => {
       const endDateTime = new Date(startDateTime)
       endDateTime.setHours(startDateTime.getHours() + selectedHours)
 
-      const response = await axios.post(
-        'http://localhost:5000/api/appointments/createAppointment',
+
+      await axios.post(
+        'https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/appointments/createAppointment',
+
         {
           clientId,
           professionalId: professionalid,
@@ -249,7 +251,7 @@ const Prestador = () => {
     }
 
     try {
-      await axios.post('http://localhost:5000/api/services/createservice', {
+      await axios.post('https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/services/createservice', {
         professionalid,
         title: serviceTitle,
         description: serviceDescription,

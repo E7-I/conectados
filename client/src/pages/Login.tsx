@@ -23,7 +23,7 @@ const Login = () => {
     try {
       console.log('Sending request to server...')
       const response = await axios.post(
-        'http://localhost:5000/api/users/login',
+        'https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/users/login',
         {
           username: formData.nombre,
           password: formData.contrasena

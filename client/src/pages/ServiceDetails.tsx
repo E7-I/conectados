@@ -195,14 +195,14 @@ const ServiceDetail = () => {
     const fetchServiceDetails = async () => {
       try {
         const serviceResponse = await axios.get(
-          `http://localhost:5000/api/services/getService/${id}`
+          `https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/services/getService/${id}`
         )
         const serviceData: Service = serviceResponse.data
         setService(serviceData)
         setSelectedImage(serviceData.images ? serviceData.images[0] : null)
 
         const appointmentsResponse = await axios.get(
-          `http://localhost:5000/api/appointments/getAppointmentByServicelId/${id}`
+          `https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/appointments/getAppointmentByServicelId/${id}`
         )
         const appointmentsData: Appointment[] = appointmentsResponse.data
 
@@ -211,7 +211,7 @@ const ServiceDetail = () => {
 
         // Fetch reviews by professional ID
         const reviewsResponse = await axios.get(
-          `http://localhost:5000/api/reviews/getReviewsByServiceId/${id}`
+          `https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/reviews/getReviewsByServiceId/${id}`
         )
         const reviewsData: Review[] = reviewsResponse.data
         setReviews(reviewsData)
@@ -290,7 +290,7 @@ const ServiceDetail = () => {
 
     try {
       await axios.post(
-        'http://localhost:5000/api/requests/createRequest',
+        'https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/requests/createRequest',
         appointmentData
       )
       toast.success(

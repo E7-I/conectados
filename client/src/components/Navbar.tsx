@@ -1,3 +1,4 @@
+
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useState } from 'react'
@@ -7,10 +8,11 @@ const Navbar = () => {
   const { isLoggedIn, user, logout } = useAuth()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  // Ocultar navbar en rutas específicas
-  const hideNavbar = ['/login', '/registro'].includes(location.pathname)
 
-  if (hideNavbar) return null
+  // Ocultar navbar en rutas específicas
+  /* const hideNavbar = ['/login', '/registro'].includes(location.pathname)
+
+  if (hideNavbar) return null*/
 
   const handleLogout = () => {
     logout()

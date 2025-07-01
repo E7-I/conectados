@@ -72,7 +72,7 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/users/register',
+        'https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/users/register',
         parseData
       )
       if (response.status === 201) {
