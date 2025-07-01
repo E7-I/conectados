@@ -234,7 +234,7 @@ const ServiceDetail = () => {
           return
         }
 
-        const response = await axios.get('http://localhost:5000/api/users/me', {
+        const response = await axios.get('https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/users/me', {
           headers: {
             Authorization: `Bearer ${token}`
           }

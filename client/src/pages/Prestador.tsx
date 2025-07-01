@@ -168,7 +168,7 @@ const Prestador = () => {
         const realAppointmentId = requestToAppointmentMap[appointmentId]
         
         if (realAppointmentId) {
-          await axios.put('http://localhost:5000/api/appointments/changeStatus', {
+          await axios.put('https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/appointments/changeStatus', {
             appointmentId: realAppointmentId, // Use the real appointment ID, the appointmendId var its actually the reqid
             status: 'concretado'
           })

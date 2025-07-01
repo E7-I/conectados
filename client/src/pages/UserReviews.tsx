@@ -54,7 +54,7 @@ const UserReviews = () => {
           return
         }
 
-        const response = await axios.get('http://localhost:5000/api/users/me', {
+        const response = await axios.get('https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/users/me', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -85,7 +85,7 @@ const UserReviews = () => {
       try {
         const token = localStorage.getItem('authToken')
         const response = await axios.get(
-          `http://localhost:5000/api/appointments/getAppointmentByClientId/${userId}`,
+          `https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/appointments/getAppointmentByClientId/${userId}`,
           {
             headers: { Authorization: `Bearer ${token}` }
           }
@@ -103,7 +103,7 @@ const UserReviews = () => {
         const serviceResponses = await Promise.all(
           uniqueServiceIds.map((id) =>
             axios
-              .get(`http://localhost:5000/api/services/getService/${id}`)
+              .get(`https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/services/getService/${id}`)
               .then((res) => ({ id: id as string, data: res.data }))
               .catch(() => ({ id: id as string, data: null }))
           )
@@ -127,7 +127,7 @@ const UserReviews = () => {
       try {
         const token = localStorage.getItem('authToken')
         const response = await axios.get(
-          `http://localhost:5000/api/reviews/getReviewsByReviewerId/${userId}`,
+          `https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/reviews/getReviewsByReviewerId/${userId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         )
         // Map reviews by appointmentId for quick lookup
@@ -149,7 +149,7 @@ const UserReviews = () => {
     try {
       const token = localStorage.getItem('authToken')
       await axios.post(
-        'http://localhost:5000/api/reviews/createReview',
+        'https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/reviews/createReview',
         {
           serviceId: appt.serviceId,
           appointmentId: appt._id,
@@ -164,7 +164,7 @@ const UserReviews = () => {
       )
       // Cambiar el estado de la cita a "finalizado"
       await axios.put(
-        'http://localhost:5000/api/appointments/changeStatus',
+        'https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/appointments/changeStatus',
         {
           appointmentId: appt._id,
           status: 'finalizado'
