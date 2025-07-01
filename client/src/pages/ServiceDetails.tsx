@@ -247,7 +247,7 @@ const ServiceDetail = () => {
     }
 
     const appointmentData = {
-      clientId: '663c2a87f4e31b1c9ef75abc', // placeholder, should be the actual client id,
+      clientId: '68636275d92cc6dce4d421db', // placeholder, should be the actual client id,
       professionalId: service.professionalid,
       serviceId: service._id,
       details: {

@@ -55,6 +55,9 @@ const Prestador = () => {
   const [servicePriceMin, setServicePriceMin] = useState<number | null>(null)
   const [servicePriceMax, setServicePriceMax] = useState<number | null>(null)
 
+  // Add a new state to store the mapping between request IDs and appointment IDs
+  const [requestToAppointmentMap, setRequestToAppointmentMap] = useState<Record<string, string>>({})
+
   // Get category color for badge
   const getCategoryColor = (category: string) => {
     const colors: { [key: string]: string } = {
@@ -124,7 +127,7 @@ const Prestador = () => {
   }, [professionalid])
 
   const handleStatusChange = async (
-    appointmentId: string,
+    appointmentId: string, // This is actually requestId
     newStatus: string
   ) => {
     try {
@@ -157,6 +160,28 @@ const Prestador = () => {
       console.error('Error updating status:', err)
       toast.error('Failed to update status.')
     }
+    
+    // Update concretado in appointment status for reviews
+    if (newStatus === 'completado') {
+      try {
+        // Get the actual appointment ID from our mapping
+        const realAppointmentId = requestToAppointmentMap[appointmentId]
+        
+        if (realAppointmentId) {
+          await axios.put('http://localhost:5000/api/appointments/changeStatus', {
+            appointmentId: realAppointmentId, // Use the real appointment ID, the appointmendId var its actually the reqid
+            status: 'concretado'
+          })
+          console.log('✅ Appointment status updated to concretado')
+        } else {
+          console.warn('⚠️ No appointment ID found for request:', appointmentId)
+          toast.error('Could not find corresponding appointment to update.')
+        }
+      } catch (err) {
+        console.error('Error updating appointment status:', err)
+        toast.error('Failed to update appointment status.')
+      }
+    }
   }
 
   const handleConfirm = async () => {
@@ -178,7 +203,7 @@ const Prestador = () => {
       const endDateTime = new Date(startDateTime)
       endDateTime.setHours(startDateTime.getHours() + selectedHours)
 
-      await axios.post(
+      const response = await axios.post(
         'http://localhost:5000/api/appointments/createAppointment',
         {
           clientId,
@@ -192,6 +217,15 @@ const Prestador = () => {
           servicePrice: service.price
         }
       )
+
+      // Store the mapping between request ID and appointment ID
+      const appointmentId = response.data._id || response.data.appointment?._id
+      if (appointmentId) {
+        setRequestToAppointmentMap(prev => ({
+          ...prev,
+          [selectedAppointment._id]: appointmentId
+        }))
+      }
 
       toast.success('Cita agendada exitosamente.')
       setSelectedAppointment(null)
