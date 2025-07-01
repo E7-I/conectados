@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import axios from 'axios'
+import { toast } from 'react-toastify'
+import { useAuth } from '../contexts/AuthContext'
 
 const Login = () => {
+  const { login } = useAuth()
   const [formData, setFormData] = useState({
     nombre: '',
     contrasena: ''
@@ -14,36 +17,71 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    console.log('Starting login process...')
+    console.log('Form data:', formData)
+    
     try {
+      console.log('Sending request to server...')
       const response = await axios.post(
         'https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/users/login',
         {
           username: formData.nombre,
           password: formData.contrasena
         },
-        { withCredentials: true }
+        { 
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
       )
-      const { token } = response.data.user
-      console.log('Token:', token)
-      if (token) {
-        localStorage.setItem('authToken', token)
-        window.location.href = '/'
-      } else {
-        console.error('No token received')
-      }
+      
+      console.log('Server response:', response)
+      
       if (response.status === 200) {
-        alert('Inicio de sesión exitoso')
+        const userData = response.data.user
+        const { token } = userData
+        console.log('Login response:', response.data)
+        console.log('Token:', token)
+        console.log('User data:', userData)
+        
+        if (token && userData) {
+          localStorage.setItem('authToken', token)
+          // Use the login function from AuthContext
+          login({
+            _id: userData.id?.toString() || userData._id || '1',
+            role: userData.role || 'client',
+            nombre: userData.name || userData.username || formData.nombre
+          })
+          toast.success('Inicio de sesión exitoso')
+          setTimeout(() => {
+            window.location.href = '/'
+          }, 1000)
+        } else {
+          console.error('No token or user data received')
+          console.error('Token:', token)
+          console.error('User data:', userData)
+          toast.error('Error en el inicio de sesión - No se recibió token')
+        }
       } else {
-        alert('Error en el inicio de sesión')
+        console.error('Non-200 status:', response.status)
+        toast.error('Error en el inicio de sesión')
       }
     } catch (error) {
+      console.error('Login error:', error)
       if (axios.isAxiosError(error)) {
-        alert(
-          `${error.response?.data?.message || 'Error en el inicio de sesión'}`
+        console.error('Axios error details:', {
+          status: error.response?.status,
+          statusText: error.response?.statusText,
+          data: error.response?.data,
+          message: error.message
+        })
+        toast.error(
+          `${error.response?.data?.message || error.message || 'Error en el inicio de sesión'}`
         )
       } else {
         console.error('Unexpected error:', error)
-        alert('Ocurrió un error inesperado')
+        toast.error('Ocurrió un error inesperado')
       }
     }
   }
@@ -98,6 +136,24 @@ const Login = () => {
             >
               Iniciar sesión
             </button>
+            
+            {/* Demo login button for testing */}
+            <button
+              type="button"
+              onClick={() => {
+                login({
+                  _id: '1',
+                  role: 'client',
+                  nombre: 'Usuario Demo'
+                })
+                toast.success('Sesión iniciada como usuario demo')
+                window.location.href = '/'
+              }}
+              className="bg-green-600 text-white px-4 py-2 rounded-md w-full cursor-pointer hover:bg-green-700 transition duration-200 mt-2"
+            >
+              Iniciar sesión como demo
+            </button>
+            
             <p className="text-sm text-center text-gray-600 mt-4">
               ¿No tienes una cuenta?{' '}
               <a

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 
 const Register = () => {
   const validaRut = (rutCompleto: string) => {
@@ -58,7 +59,7 @@ const Register = () => {
   const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault()
     if (formData.contrasena !== formData.confirmarContrasena) {
-      alert('Las contraseñas no coinciden')
+      toast.error('Las contraseñas no coinciden')
       return
     }
 
@@ -75,17 +76,17 @@ const Register = () => {
         parseData
       )
       if (response.status === 201) {
-        alert('Registro exitoso')
+        toast.success('Registro exitoso')
         console.log('Registro exitoso:', response.data)
       } else {
-        alert('Error en el registro')
+        toast.error('Error en el registro')
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        alert(`${error.response?.data?.message || 'Error en el registro'}`)
+        toast.error(`${error.response?.data?.message || 'Error en el registro'}`)
       } else {
         console.error('Unexpected error:', error)
-        alert('Ocurrió un error inesperado')
+        toast.error('Ocurrió un error inesperado')
       }
     }
   }

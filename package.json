@@ -19,6 +19,7 @@
     "cypress": "^14.3.3"
   },
   "dependencies": {
+    "axios": "^1.10.0",
     "conectados": "file:",
     "eslint": "^9.26.0",
     "eslint-plugin-cypress": "^4.3.0",
