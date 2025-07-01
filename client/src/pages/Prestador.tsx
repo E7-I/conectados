@@ -204,7 +204,7 @@ const Prestador = () => {
       endDateTime.setHours(startDateTime.getHours() + selectedHours)
 
 
-      await axios.post(
+      const response = await axios.post(
         'https://conectadose7-b5dfgdb2e2fkg2hd.canadacentral-01.azurewebsites.net/api/appointments/createAppointment',
 
         {
