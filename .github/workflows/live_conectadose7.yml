@@ -7,6 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
     permissions:
@@ -63,3 +64,30 @@ jobs:
           app-name: 'ConectadosE7'
           slot-name: 'Production'
           package: .  # Deploy current directory, where downloaded artifact contents now exist
+
+  selenium-tests:
+    runs-on: ubuntu-latest
+    needs: deploy  
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.x'
+
+      - name: Install Selenium test dependencies
+        working-directory: ./selenium-tests
+        run: npm install
+
+      - name: Run Selenium tests
+        working-directory: ./selenium-tests
+        run: |
+          set -e
+          EXIT_CODE=0
+          for TEST in Home.test.js Services.test.js Register.test.js Login.test.js; do
+            echo "Running $TEST..."
+            node $TEST || EXIT_CODE=1
+          done
+          exit $EXIT_CODE
+        
