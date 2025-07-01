@@ -91,4 +91,22 @@ jobs:
             sleep 5
           done
           exit $EXIT_CODE
-        
+
+      - name: Send Discord notification
+        if: always()
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          STATUS="PASSED"
+          COLOR=3066993
+          if [ "${{ job.status }}" != "success" ]; then
+            STATUS="FAILED"
+            COLOR=15158332
+          fi
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            -d "{\"embeds\":[{\"title\":\"Selenium Tests\",\"description\":\"$STATUS\",\"color\":$COLOR}]}" \
+            $DISCORD_WEBHOOK_URL
+  
+
+         
