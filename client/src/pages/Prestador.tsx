@@ -316,7 +316,7 @@ const Prestador = () => {
           </div>
 
           <div className="p-6">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-4">
               <div>
                 <h2 className="text-xl font-semibold text-gray-800">
                   Resumen de Actividad
@@ -328,7 +328,7 @@ const Prestador = () => {
                   }
                 </p>
               </div>
-              <div className="flex space-x-2">
+              <div className="flex flex-wrap gap-2 sm:justify-end">
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                   {appointments.filter((a) => a.status === 'aceptado').length} Aceptadas
                 </span>

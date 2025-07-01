@@ -732,5 +732,4 @@ const ServiceDetail = () => {
     </div>
   )
 }
-
 export default ServiceDetail
