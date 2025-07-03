@@ -282,8 +282,8 @@ const ServiceDetail = () => {
         time: `${new Date(selectedSlot.startDateTime).toLocaleTimeString()} - ${new Date(selectedSlot.endDateTime).toLocaleTimeString()}`,
         description,
         location: {
-          lat: parseFloat(location.lat),
-          lng: parseFloat(location.lng)
+          lat: (location.lat),
+          lng: (location.lng)
         }
       }
     }
@@ -488,7 +488,7 @@ const ServiceDetail = () => {
                           onChange={(e) =>
                             setLocation({ ...location, lat: e.target.value })
                           }
-                          placeholder="Latitud"
+                          placeholder="Ciudad"
                         />
                         <input
                           type="text"
@@ -497,11 +497,11 @@ const ServiceDetail = () => {
                           onChange={(e) =>
                             setLocation({ ...location, lng: e.target.value })
                           }
-                          placeholder="Longitud"
+                          placeholder="Direccion"
                         />
                       </div>
                       <p className="text-xs text-gray-500 mt-1">
-                        Ingresa las coordenadas donde se realizará el servicio
+                        Ingresa la direccion completa donde se realizará el servicio.
                       </p>
                     </div>
                   </div>
