@@ -23,8 +23,8 @@ interface Appointment {
     time: string
     description: string
     location: {
-      lat: number
-      lng: number
+      lat: string
+      lng: string
     }
   }
   status: string
@@ -486,8 +486,8 @@ const Prestador = () => {
                                   {appointment.details.description}
                                 </div>
                                 <div className="text-xs text-gray-500 mt-1">
-                                  Lat: {appointment.details.location.lat}, 
-                                  Lng: {appointment.details.location.lng}
+                                  Ciuidad: {appointment.details.location.lat}, 
+                                  Direccion: {appointment.details.location.lng}
                                 </div>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
