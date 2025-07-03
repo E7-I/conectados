@@ -6,11 +6,11 @@ SUB-ESQUEMAS
 ***********/
 const locationSchema = new Schema({
   lat: {
-    type: Number,
+    type: String,
     required: true,
   },
   lng: {
-    type: Number,
+    type: String,
     required: true,
   },
 }, { _id: false });
