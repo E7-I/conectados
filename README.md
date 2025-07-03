@@ -89,8 +89,10 @@ The [live](https://github.com/E7-I/conectados/tree/live) branch was created to h
 
 These actions are divided into two files:
 
-- [Frontend](https://github.com/E7-I/conectados/blob/live/.github/workflows/azure-static-web-apps-delightful-flower-08c627f1e.yml)
-- [Backend](https://github.com/E7-I/conectados/blob/live/.github/workflows/live_conectadose7.yml)
+- [Frontend](https://github.com/E7-I/conectados/blob/live/.github/workflows/azure-static-web-apps-delightful-flower-08c627f1e.yml): With a static web app
+- [Backend](https://github.com/E7-I/conectados/blob/live/.github/workflows/live_conectadose7.yml): With a web app + Azure Cosmos for MongoDB, in this pipeline we also added [Selenium tests](https://github.com/E7-I/conectados/tree/live/selenium) and a notification if this tests pass/fail on our discord server
+
+And the site is available [here](https://delightful-flower-08c627f1e.6.azurestaticapps.net/)
 
 
 ## 📄 Documentation
