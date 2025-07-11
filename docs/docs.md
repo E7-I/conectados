@@ -4,6 +4,8 @@
 
 Cada profesional podrá crear su perfil, subir fotos de sus trabajos, indicar precios, categorías y horarios disponibles. Los usuarios podrán buscar por tipo de servicio, ubicación o disponibilidad, chatear directamente con la persona, agendar servicios y dejar una reseña después.
 
+---
+
 # Trabajo realizado
 
 Actualmente se tienen implementados los siguientes requisitos funcionales:
@@ -17,6 +19,8 @@ Asimismo, se configuró Discord como principal canal de comunicación y espacio 
 
 Paralelamente, se utilizó Jira junto con un tablero Kanban para organizar y delegar tareas. Cada ticket generado en Jira se reflejaba en una branch específica del repositorio, lo que facilitó el control del flujo de trabajo y aseguró una estructura ordenada en el desarrollo colaborativo.
 
+---
+
 # Arquitectura del proyecto
 
 ![alt text](arquitectura.png)
@@ -24,6 +28,8 @@ Paralelamente, se utilizó Jira junto con un tablero Kanban para organizar y del
 En cuanto a la arquitectura del proyecto, tenemos un backend en Node.js con Express.js para controlar las rutas, conectado a una base de datos MongoDB. En cuanto al frontend, se utiliza Node con React.
 
 Por su parte, para las pruebas se utilizó Cypress, ya que es compatible con las tecnologías utilizadas.
+
+---
 
 # Estructura del código
 
@@ -36,12 +42,17 @@ Dentro de este tenemos el backend, con:
 - **Models**: Donde se definieron los modelos para la base de datos.
 - **Helpers**: Funcionalidades extra para apoyar a los controladores.
 - **Middleware**: Middleware para obtener mayor control en la API.
+Para ver más detalles sobre estos, véase [Server](https://github.com/E7-I/conectados/wiki/Server).
+
+---
 
 ## client  
 Dentro de este tenemos el frontend, con:
 - **Components**: Los componentes de React utilizados.
 - **Pages**: Donde se encuentran las páginas.
+Para ver más detalles sobre estos, véase [Cliente](https://github.com/E7-I/conectados/wiki/Cliente).
 
+---
 # Endpoints
 
 En cuanto a los endpoints, separamos las rutas de acuerdo con su funcionalidad desde el punto de vista del negocio. Tenemos:
@@ -53,6 +64,8 @@ En cuanto a los endpoints, separamos las rutas de acuerdo con su funcionalidad d
 - `/api/request`: Para la gestion de las peticiones a agendar un servicio
 
 Para ver más detalles sobre estos, véase [Endpoints Backend](https://github.com/E7-I/conectados/wiki/Endpoints).
+
+---
 
 # Pruebas
 
@@ -87,6 +100,9 @@ tablero kanban en jira
 integracion de github con discord
 ![alt text](image-8.png)
 Carta Gantt realizada directamente en Jira con [planyway](https://planyway.com/jira) con los tickets del tablero Kanban.
+
+---
+
 # Estrategia de Pruebas
 
 ## ¿Qué estoy probando?
@@ -115,6 +131,7 @@ Validamos tanto el **funcionamiento correcto** (casos exitosos) como el **manejo
 - **Pruebas de partición de equivalencia**: Evaluamos diferentes grupos de datos válidos e inválidos.  
 - **Pruebas negativas**: Validamos que el sistema maneje correctamente errores y datos incorrectos.
 
+---
 
 # Supuestos y dependencias
 
