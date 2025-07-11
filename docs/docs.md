@@ -42,6 +42,7 @@ Dentro de este tenemos el backend, con:
 - **Models**: Donde se definieron los modelos para la base de datos.
 - **Helpers**: Funcionalidades extra para apoyar a los controladores.
 - **Middleware**: Middleware para obtener mayor control en la API.
+  
 Para ver más detalles sobre estos, véase [Server](https://github.com/E7-I/conectados/wiki/Server).
 
 ---
@@ -50,6 +51,9 @@ Para ver más detalles sobre estos, véase [Server](https://github.com/E7-I/cone
 Dentro de este tenemos el frontend, con:
 - **Components**: Los componentes de React utilizados.
 - **Pages**: Donde se encuentran las páginas.
+- **Assets**: Recurso que se utiliza como fondo con utilidades de Tailwind.
+- **Contexts**: Provee el estado global de autenticación.
+  
 Para ver más detalles sobre estos, véase [Cliente](https://github.com/E7-I/conectados/wiki/Cliente).
 
 ---
